@@ -4608,11 +4608,19 @@ void statistics() {
 	Patients p;
 	int totalPatient = 0;
 	totalPatient = Patients::gettotal();
+
 	int* ageGroup = Patients::getAgeGroup();
 	int ageGroup1 = ageGroup[0];
 	int ageGroup2 = ageGroup[1];
 	int ageGroup3 = ageGroup[2];
 	int ageGroup4 = ageGroup[3];
+
+	int* BMIGroup = Patients::getBMIGroup();
+	int BMIGroup1 = BMIGroup[0];
+	int BMIGroup2 = BMIGroup[1];
+	int BMIGroup3 = BMIGroup[2];
+	int BMIGroup4 = BMIGroup[3];
+
 
 
 	Departments dpt;
@@ -4733,6 +4741,10 @@ void statistics() {
 			PM.setValue(2, to_string(ageGroup2));
 			PM.setValue(3, to_string(ageGroup3));
 			PM.setValue(4, to_string(ageGroup4));
+			PM.setValue(5, to_string(BMIGroup1));
+			PM.setValue(6, to_string(BMIGroup2));
+			PM.setValue(7, to_string(BMIGroup3));
+			PM.setValue(8, to_string(BMIGroup4));
 			switch (PM.prompt()) {
 			default:
 				break;
@@ -4764,6 +4776,7 @@ void statistics() {
 			}
 			break;
 		case 7:
+			return;
 			break;
 		default:
 			break;

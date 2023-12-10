@@ -191,19 +191,26 @@ int* Patients::getBMIGroup() {
 	DatabaseConnector db;
 	db.prepareStatement("SELECT CASE WHEN (Weight / (Height * Height)) >= 30 THEN 'Obese' WHEN (Weight / (Height * Height)) >= 25 THEN 'Overweight' WHEN (Weight / (Height * Height)) >= 18.5 THEN 'Normal' ELSE 'Underweight' END AS BMI_Category, COUNT(*) AS PatientCount FROM Patients GROUP BY BMI_Category;");
 
-	int* ageGroup = new int[4] { 0, 0, 0, 0 };
+	int* BMIGroup = new int[4] { 0, 0, 0, 0 };
 
 	db.QueryResult();
-
 	if (db.res->rowsCount() > 0) {
 		while (db.res->next()) {
-			ageGroup[0] = db.res->getInt("AgeBelow21");
-			ageGroup[1] = db.res->getInt("Age21To35");
-			ageGroup[2] = db.res->getInt("Age36To65");
-			ageGroup[3] = db.res->getInt("AgeAbove65");
+			std::string category = db.res->getString("BMI_Category");
+
+			// Check the category and update the corresponding count in BMIGroup
+			if (category == "Obese")
+				BMIGroup[0] = db.res->getInt("PatientCount");
+			else if (category == "Overweight")
+				BMIGroup[1] = db.res->getInt("PatientCount");
+			else if (category == "Normal")
+				BMIGroup[2] = db.res->getInt("PatientCount");
+			else if (category == "Underweight")
+				BMIGroup[3] = db.res->getInt("PatientCount");
 		}
-	}
-	return ageGroup;
+		}
+	
+	return BMIGroup;
 	db.~DatabaseConnector();
 }
 
