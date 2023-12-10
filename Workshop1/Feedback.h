@@ -33,5 +33,9 @@ public:
 	static void removeFeedback(int FeedbackID);
 
 	static vector<Feedback> getflistall(string sortColumn, bool ascending);
+
+	static int getTotal();
+	static int getTodayTotal();
+	static int getLast2wkTotal();
 };
 #endif

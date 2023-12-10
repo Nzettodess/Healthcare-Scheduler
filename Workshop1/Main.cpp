@@ -192,7 +192,17 @@ void registerAccount() {
 			break;
 
 		case 4:
-		accreg.AccountID = accreg.insertacc();
+			
+			if (accreg.Username.empty() || accreg.Password.empty()) {
+				cout << "Username and Password cannot be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				accreg.AccountID = accreg.insertacc();
+			
+			}
+							
 			if (isPatient) {
 				registerPatientProfile(accreg.AccountID);
 			}
@@ -252,7 +262,7 @@ void registerPatientProfile(int AccountID) {
 		case 2:
 			cout << "Please enter your mobile number (000-0000000): ";
 			cin >> profilep.PTelephoneNo;
-			if (validateFormat(profilep.PTelephoneNo, R"(\d{3}-\d{7})")) {
+			if (validateFormat(profilep.PTelephoneNo, R"(\d{3}-\d{7})") && profilep.PTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
 				RM2.setValue(1, profilep.PTelephoneNo);
 				break;
@@ -345,7 +355,7 @@ void registerDoctorProfile(int AccountID) {
 			cout << "Please enter your mobile number (000-0000000): ";
 			cin >> profiled.DTelephoneNo;
 
-			if (validateFormat(profiled.DTelephoneNo, R"(\d{3}-\d{7})")) {
+			if (validateFormat(profiled.DTelephoneNo, R"(\d{3}-\d{7})") && profiled.DTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
 				RM3.setValue(1, profiled.DTelephoneNo);
 				break;
@@ -506,10 +516,16 @@ void loginAccount() {
 			break;
 
 		case 3: 
+			if (acclogin.Username.empty() || acclogin.Password.empty()) {
+				cout << "Invalid Account!";
+				_getch();
+				break;
+			}
+
 			if (acclogin.loginacc()) {
 
 				if (acclogin.ARole == 0) {
-					homeAdmin(acclogin); //**
+					homeAdmin(acclogin); 
 				}
 				else if (acclogin.ARole == 1) { 
 					ddata.getddataa(acclogin.AccountID);
@@ -520,12 +536,13 @@ void loginAccount() {
 					homePatient(acclogin, pdata);
 				}
 				else {
-					cout << "Invalid Account" << endl;
+					cout << "Invalid Account!" << endl;
 					_getch();
+					break;
 				}
 			}
 			else {
-				cout << "Invalid Login" << endl;
+				cout << "Invalid Login!" << endl;
 				_getch();
 			}
 			break;
@@ -538,7 +555,6 @@ void loginAccount() {
 		}
 	}
 }
-
 // HomeMenuPatients 
 void homePatient(Accounts a, Patients p) {
 	auto notificationCallback = [a, p]() { patientNotificationChecker(a, p); };
@@ -706,7 +722,7 @@ Patients patientProfileMenu(Accounts a, Patients p) {
 		case 2:
 			cout << "Please enter your mobile number (000-0000000): ";
 			cin >> temp.PTelephoneNo;
-			if (validateFormat(temp.PTelephoneNo, R"(\d{3}-\d{7})")) {
+			if (validateFormat(temp.PTelephoneNo, R"(\d{3}-\d{7})") && temp.PTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
 				PPM.setValue(1, temp.PTelephoneNo);
 				break;
@@ -1729,7 +1745,7 @@ Doctors doctorProfileMenu(Accounts a, Doctors d) {
 		case 2:
 			cout << "Please enter your mobile number (000-0000000): ";
 			cin >> temp.DTelephoneNo;
-			if (validateFormat(temp.DTelephoneNo, R"(\d{3}-\d{7})")) {
+			if (validateFormat(temp.DTelephoneNo, R"(\d{3}-\d{7})") && temp.DTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
 				DPM.setValue(1, temp.DTelephoneNo);
 				break;
@@ -2058,10 +2074,18 @@ void addAppointmentMenu(Accounts a, Doctors d, int PatientID) {
 			}
 			break;
 		case 3:
-			appaam.insertapp("Succeeded");
-			cout << "Completed!";
-			_getch();
-			break;
+			if (appaam.ADate.empty() || appaam.ATime.empty()) {
+				cout << "Date and Time cannot be empty!";
+				_getch();
+				break;
+			}
+			else {
+				appaam.insertapp("Succeeded");
+				cout << "Completed!";
+				_getch();
+				break;
+			}
+			
 		case 4:
 			return;
 		default:
@@ -2312,7 +2336,6 @@ void homeAdmin(Accounts aa) {
 		}
 	}
 }
-
 void accountsManager() {
 
 	Accounts a;
@@ -2610,7 +2633,6 @@ void accountEditMenu(int AccountID) {
 	}
 
 }
-
 void doctorsManager() {
 	Doctors d;
 	vector<Doctors> Doctors;
@@ -2656,7 +2678,7 @@ void doctorsManager() {
 			displayString = "\nSearch Result: \n\n";
 			stringstream tmpString;
 			tmpString << fixed << setprecision(2) << setw(5) << "DoctorID" << "|" << setw(11) << "Name"
-				<< "|" << setw(15) << "TelephoneNo" << "|" << setw(20) << "Specialization" << "|" << setw(20) << "DepartmentID" << "|" << endl;
+				<< "|" << setw(15) << "Mobile Number" << "|" << setw(20) << "Specialization" << "|" << setw(20) << "DepartmentID" << "|" << endl;
 
 			for (int i = 0; i < Doctors.size(); i++) {
 				tmpString << setw(8) << Doctors[i].DoctorID << "|" << setw(11) << Doctors[i].DName
@@ -2784,7 +2806,7 @@ void addDoctors() {
 			cout << "Please enter the mobile number (000-0000000): ";
 			cin >> profiled.DTelephoneNo;
 
-			if (validateFormat(profiled.DTelephoneNo, R"(\d{3}-\d{7})")) {
+			if (validateFormat(profiled.DTelephoneNo, R"(\d{3}-\d{7})") && profiled.DTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
 				RM3.setValue(1, profiled.DTelephoneNo);
 				break;
@@ -2865,7 +2887,7 @@ void doctorProfileMenu(int DoctorID) {
 		case 2:
 			cout << "Please enter your mobile number (000-0000000): ";
 			cin >> temp.DTelephoneNo;
-			if (validateFormat(temp.DTelephoneNo, R"(\d{3}-\d{7})")) {
+			if (validateFormat(temp.DTelephoneNo, R"(\d{3}-\d{7})") && temp.DTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
 				DPM.setValue(1, temp.DTelephoneNo);
 				break;
@@ -2917,7 +2939,6 @@ void doctorProfileMenu(int DoctorID) {
 		}
 	}
 }
-
 void patientsManager() {
 	Patients p;
 	vector<Patients> Patients;
@@ -3131,7 +3152,7 @@ void addPatients() {
 		case 2:
 			cout << "Please enter your mobile number (000-0000000): ";
 			cin >> profilep.PTelephoneNo;
-			if (validateFormat(profilep.PTelephoneNo, R"(\d{3}-\d{7})")) {
+			if (validateFormat(profilep.PTelephoneNo, R"(\d{3}-\d{7})") && profilep.PTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
 				RM2.setValue(1, profilep.PTelephoneNo);
 				break;
@@ -3269,7 +3290,7 @@ void patientProfileMenu(int PatientID) {
 		case 2:
 			cout << "Please enter your mobile number (000-0000000): ";
 			cin >> temp.PTelephoneNo;
-			if (validateFormat(temp.PTelephoneNo, R"(\d{3}-\d{7})")) {
+			if (validateFormat(temp.PTelephoneNo, R"(\d{3}-\d{7})") && temp.PTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
 				PPM.setValue(1, temp.PTelephoneNo);
 				break;
@@ -3346,7 +3367,6 @@ void patientProfileMenu(int PatientID) {
 		}
 	}
 }
-
 void departmentsManager() {
 	Departments dpt;
 	vector<Departments> Departments;
@@ -3501,9 +3521,18 @@ void addDepartments() {
 			break;
 
 		case 3:
-			profiledpt.insertdpt();
-			cout << "Done!";
-			_getch();
+			if(profiledpt.DptName.empty()) {
+				cout << "Department Name cannot be empty";
+				_getch();
+				break;
+			}
+			else {
+				profiledpt.insertdpt();
+				cout << "Done!";
+				_getch();
+				break;
+			}
+			
 			break;
 
 		case 4:
@@ -3572,7 +3601,6 @@ void updateDepartmentMenu(int DepartmentID) {
 		}
 	}
 }
-
 void appointmentsManager(){
 	Appointments appam;
 	vector<Appointments> Appointments;
@@ -3934,7 +3962,6 @@ void updateAppointments(int AppointmentID){
 		}
 	}
 }
-
 void feedbackManager(){
 	Feedback ffm;
 	vector<Feedback> Feedback;
@@ -4243,9 +4270,6 @@ void updateFeedback(int FeedbackID) {
 		}
 	}
 }
-
-
-
 void doctorList() {
 	vector<Doctors> Doctors;
 	string displayString = "", keyWord = "", sortColumn = "DoctorID";
@@ -4581,7 +4605,6 @@ void patientList() {
 		}
 	};
 }
-
 void statistics() {
 	Accounts a;
 	int totalAcc = -1;
@@ -4621,12 +4644,43 @@ void statistics() {
 	int BMIGroup3 = BMIGroup[2];
 	int BMIGroup4 = BMIGroup[3];
 
-
-
 	Departments dpt;
+	int totalDepartment = -1;
+	totalDepartment = Departments::gettotal();
+	int* tdGroup = Departments::getDptDcount();
+	int td1 = tdGroup[0];
+	int td2 = tdGroup[1];
+	int td3 = tdGroup[2];
+	int td4 = tdGroup[3];
+	int td5 = tdGroup[4];
+	int td6 = tdGroup[5];
+	int td7 = tdGroup[6];
+	int td8 = tdGroup[7];
+	int td9 = tdGroup[8];
+	int td10 = tdGroup[9];
+
 	Appointments app;
+	int totalAppointment = -1;
+	totalAppointment = Appointments::gettotal();
+	int todaytotalAPP = -1;
+	todaytotalAPP = Appointments::getTodayTotal();
+
+	int tmrtotalAPP = -1;
+	tmrtotalAPP = Appointments::getTmrTotal();
+
+	int last2wkAPP = -1;
+	last2wkAPP = Appointments::getLast2wkTotal();
+
+	int next2wkAPP = -1;
+	next2wkAPP = Appointments::getNext2wkTotal();
 
 	Feedback f;
+	int totalFeedback = -1;
+	totalFeedback = Feedback::getTotal();
+	int todaytotalF = -1;
+	todaytotalF = Feedback::getTodayTotal();
+	int last2wkF = -1;
+	last2wkF = Feedback::getLast2wkTotal();
 	ostringstream bestRatings, worstRatings;
 	double bestRate = -1;
 	double worstRate = -1;
@@ -4675,13 +4729,13 @@ void statistics() {
 	PM.addOption("->> Total Patients with Underweight");
 	PM.footer = "\nPress any key to go back";
 
-
 	Menu DPTM;
 	DPTM.header = "Departments Statistics\n";
 	DPTM.addOption("->>Total Departments");
 	DPTM.addOption("->>Total Doctors on Cardiology");
 	DPTM.addOption("->>Total Doctors on Orthopedics");
 	DPTM.addOption("->>Total Doctors on Neurology");
+	DPTM.addOption("->>Total Doctors on Pediatrics");
 	DPTM.addOption("->>Total Doctors on Oncology");
 	DPTM.addOption("->>Total Doctors on Gastroenterology");
 	DPTM.addOption("->>Total Doctors on Dermatology");
@@ -4721,6 +4775,8 @@ void statistics() {
 			AM.setValue(2, to_string(totalaDoctor));
 			AM.setValue(3, to_string(totalaPatient));
 			switch (AM.prompt()) {
+			case 1:
+				break;
 			default:
 				break;
 			}
@@ -4731,6 +4787,8 @@ void statistics() {
 			DM.setValue(1, bestDoctor);
 			DM.setValue(2, worstDoctor);
 			switch (DM.prompt()) {
+			case 1:
+				break;
 			default:
 				break;
 			}
@@ -4746,31 +4804,56 @@ void statistics() {
 			PM.setValue(7, to_string(BMIGroup3));
 			PM.setValue(8, to_string(BMIGroup4));
 			switch (PM.prompt()) {
+			case 1:
+				break;
 			default:
 				break;
 			}
 			break;
 		case 4:
-			
+			DPTM.setValue(0, to_string(totalDepartment));
+			DPTM.setValue(1, to_string(td1));
+			DPTM.setValue(2, to_string(td2));
+			DPTM.setValue(3, to_string(td3));
+			DPTM.setValue(4, to_string(td4));
+			DPTM.setValue(5, to_string(td5));
+			DPTM.setValue(6, to_string(td6));
+			DPTM.setValue(7, to_string(td7));
+			DPTM.setValue(8, to_string(td8));
+			DPTM.setValue(9, to_string(td9));
+			DPTM.setValue(10, to_string(td10));
 			switch (DPTM.prompt()) {
+			case 1:
+				break;
 			default:
 				break;
 			}
 			break;
 
 		case 5:
-			
+			APPM.setValue(0, to_string(totalAppointment));
+			APPM.setValue(1, to_string(todaytotalAPP));
+			APPM.setValue(2, to_string(tmrtotalAPP));
+			APPM.setValue(3, to_string(last2wkAPP));
+			APPM.setValue(4, to_string(next2wkAPP));
 			switch (APPM.prompt()) {
+			case 1:
+				break;
 			default:
 				break;
 			}
 			break;
 		case 6:
+			FM.setValue(0, to_string(totalFeedback));
+			FM.setValue(1, to_string(todaytotalF));
+			FM.setValue(2, to_string(last2wkF));
 			FM.setValue(3, bestRatings.str());
 			FM.setValue(4, bestDoctor);
 			FM.setValue(5, worstRatings.str());
 			FM.setValue(6, worstDoctor);
 			switch (FM.prompt()) {
+			case 1:
+				break;
 			default:
 				break;
 			}
@@ -4783,6 +4866,7 @@ void statistics() {
 		}
 	}
 }
+
 //Main
 int main() {
 	//system("Color A");
@@ -4827,6 +4911,7 @@ void mainMenu() {
 		}
 	}
 }
+
 //Miscellaneous Functions (Input validation)
 bool hasAlphabet(const string& s) {
 	for (char ch : s) {

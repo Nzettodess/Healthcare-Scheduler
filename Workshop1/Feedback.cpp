@@ -185,3 +185,53 @@ vector<Feedback> Feedback::getflistall(string sortColumn, bool ascending) {
 	db.~DatabaseConnector();
 	return Feedbackl;
 }
+
+int Feedback::getTotal() {
+	DatabaseConnector db;
+	int totalAcc = -1;
+	db.prepareStatement("Select COUNT(FeedbackID) AS totalacc FROM Feedback");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAcc = db.res->getInt("totalacc");//int64
+		}
+	}
+	return totalAcc;
+	db.~DatabaseConnector();
+
+	/*Method to use:
+	int test;
+	test = Accounts::getTotalAccount();
+	cout << test;*/
+}
+
+int Feedback::getTodayTotal() {
+	DatabaseConnector db;
+	int totalAcc = -1;
+	db.prepareStatement("SELECT COUNT(*) AS FeedbackCount FROM Feedback	WHERE FDate = CURDATE();");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAcc = db.res->getInt("FeedbackCount");//int64
+		}
+	}
+	return totalAcc;
+	db.~DatabaseConnector();
+}
+
+int Feedback::getLast2wkTotal() {
+	DatabaseConnector db;
+	int totalAcc = -1;
+	db.prepareStatement("SELECT COUNT(*) AS FeedbackCount FROM Feedback WHERE FDate >= DATE_SUB(CURDATE(), INTERVAL 14 DAY)");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAcc = db.res->getInt("FeedbackCount");//int64
+		}
+	}
+	return totalAcc;
+	db.~DatabaseConnector();
+}

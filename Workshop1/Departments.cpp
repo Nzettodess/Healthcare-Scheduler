@@ -140,3 +140,57 @@ void Departments::getdptdatadpt(int DepartmentID) {
 	}
 	db.~DatabaseConnector();
 }
+
+int* Departments::getDptDcount() {
+	DatabaseConnector db;
+	db.prepareStatement("SELECT departments.DptName, COUNT(*) AS TotalDoctors FROM departments JOIN doctors using (DepartmentID) GROUP BY departments.DepartmentID, departments.DptName;");
+
+	int* DptDcount = new int[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0,0 };
+
+	db.QueryResult();
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			std::string category = db.res->getString("DptName");
+
+			// Check the category and update the corresponding count in BMIGroup
+			if (category == "Cardiology")
+				DptDcount[0] = db.res->getInt("TotalDoctors");
+			else if (category == "Orthopedics")
+				DptDcount[1] = db.res->getInt("TotalDoctors");
+			else if (category == "Neurology")
+				DptDcount[2] = db.res->getInt("TotalDoctors");
+			else if (category == "Pediatrics")
+				DptDcount[3] = db.res->getInt("TotalDoctors");
+			else if (category == "Oncology")
+				DptDcount[4] = db.res->getInt("TotalDoctors");
+			else if (category == "Gastroenterology")
+				DptDcount[5] = db.res->getInt("TotalDoctors");
+			else if (category == "Dermatology")
+				DptDcount[6] = db.res->getInt("TotalDoctors");
+			else if (category == "Radiology")
+				DptDcount[7] = db.res->getInt("TotalDoctors");
+			else if (category == "Anesthesiology")
+				DptDcount[8] = db.res->getInt("TotalDoctors");
+			else if (category == "Urology")
+				DptDcount[9] = db.res->getInt("TotalDoctors");
+		}
+	}
+
+	return DptDcount;
+	db.~DatabaseConnector();
+}
+
+int Departments::gettotal() {
+	DatabaseConnector db;
+	int totalAcc = -1;
+	db.prepareStatement("Select COUNT(DepartmentID) AS totalacc FROM Departments");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAcc = db.res->getInt("totalacc");//int64
+		}
+	}
+	return totalAcc;
+	db.~DatabaseConnector();
+}

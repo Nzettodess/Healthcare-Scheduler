@@ -52,6 +52,13 @@ public:
 	static vector<Appointments> getapplistall(string sortColumn, bool ascending);
 
 	static void removeApps(int AppointmentID);
+
+	static int gettotal();
+
+	static int getTodayTotal();
+	static int getTmrTotal();
+	static int getLast2wkTotal();
+	static int getNext2wkTotal();
 };
 #endif
 

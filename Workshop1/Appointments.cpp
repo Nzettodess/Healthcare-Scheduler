@@ -248,3 +248,79 @@ void Appointments::removeApps(int AppointmentID) {
 	db.QueryStatement();
 	db.~DatabaseConnector();
 }
+
+int Appointments::gettotal() {
+	DatabaseConnector db;
+	int totalAcc = -1;
+	db.prepareStatement("Select COUNT(AppointmentID) AS totalacc FROM Appointments");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAcc = db.res->getInt("totalacc");//int64
+		}
+	}
+	return totalAcc;
+	db.~DatabaseConnector();
+}
+
+int Appointments::getTodayTotal(){
+	DatabaseConnector db;
+	int totalAcc = -1;
+	db.prepareStatement("SELECT COUNT(*) AS FeedbackCount FROM Appointments	WHERE ADate = CURDATE();");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAcc = db.res->getInt("FeedbackCount");//int64
+		}
+	}
+	return totalAcc;
+	db.~DatabaseConnector();
+}
+int Appointments::getTmrTotal(){
+	DatabaseConnector db;
+	int totalAppointments = -1;
+
+	// Adjust the query to select appointments for tomorrow
+	db.prepareStatement("SELECT COUNT(*) AS AppointmentCount FROM Appointments WHERE ADate = DATE_ADD(CURDATE(), INTERVAL 1 DAY)");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAppointments = db.res->getInt("AppointmentCount");
+		}
+	}
+	return totalAppointments;
+	db.~DatabaseConnector();
+}
+int Appointments::getLast2wkTotal(){
+	DatabaseConnector db;
+	int totalAcc = -1;
+	db.prepareStatement("SELECT COUNT(*) AS FeedbackCount FROM Appointments WHERE ADate >= DATE_SUB(CURDATE(), INTERVAL 14 DAY)");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAcc = db.res->getInt("FeedbackCount");//int64
+		}
+	}
+	return totalAcc;
+	db.~DatabaseConnector();
+}
+int Appointments::getNext2wkTotal(){
+	DatabaseConnector db;
+	int totalAppointments = -1;
+
+	// Adjust the query to select appointments for tomorrow
+	db.prepareStatement("SELECT COUNT(*) AS AppointmentCount FROM Appointments WHERE ADate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 14 DAY)");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalAppointments = db.res->getInt("AppointmentCount");
+		}
+	}
+	return totalAppointments;
+	db.~DatabaseConnector();
+}

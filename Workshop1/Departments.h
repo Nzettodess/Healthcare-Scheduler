@@ -52,5 +52,9 @@ public:
 	static void removeDpt(int DepartmentID);
 
 	void getdptdatadpt(int DepartmentID);
+
+	static int* getDptDcount();
+
+	static int gettotal();
 };
 #endif
