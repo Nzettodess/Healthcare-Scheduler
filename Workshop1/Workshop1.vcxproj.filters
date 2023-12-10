@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Done%28UntilFinal%29">
+      <UniqueIdentifier>{d071219a-f8ed-46ee-98fd-791bc3e2ed87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Done%28UntilFinal%29">
+      <UniqueIdentifier>{6f5826ff-395b-460b-bac7-eaf9e1bf817a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PartiallyDone">
+      <UniqueIdentifier>{ce2d45b5-258c-423a-b368-8a59b8960b85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PartiallyDone">
+      <UniqueIdentifier>{9ec4cd68-7b2e-4f53-8643-9b57c2ee2791}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DatabaseConnector.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Accounts.cpp">
+      <Filter>Source Files\PartiallyDone</Filter>
+    </ClCompile>
+    <ClCompile Include="Appointments.cpp">
+      <Filter>Source Files\PartiallyDone</Filter>
+    </ClCompile>
+    <ClCompile Include="Departments.cpp">
+      <Filter>Source Files\PartiallyDone</Filter>
+    </ClCompile>
+    <ClCompile Include="Feedback.cpp">
+      <Filter>Source Files\PartiallyDone</Filter>
+    </ClCompile>
+    <ClCompile Include="Doctors.cpp">
+      <Filter>Source Files\PartiallyDone</Filter>
+    </ClCompile>
+    <ClCompile Include="Patients.cpp">
+      <Filter>Source Files\PartiallyDone</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="wintoastlib.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Toast.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Notifications.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DatabaseConnector.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Accounts.h">
+      <Filter>Header Files\PartiallyDone</Filter>
+    </ClInclude>
+    <ClInclude Include="Appointments.h">
+      <Filter>Header Files\PartiallyDone</Filter>
+    </ClInclude>
+    <ClInclude Include="Departments.h">
+      <Filter>Header Files\PartiallyDone</Filter>
+    </ClInclude>
+    <ClInclude Include="Feedback.h">
+      <Filter>Header Files\PartiallyDone</Filter>
+    </ClInclude>
+    <ClInclude Include="Doctors.h">
+      <Filter>Header Files\PartiallyDone</Filter>
+    </ClInclude>
+    <ClInclude Include="Patients.h">
+      <Filter>Header Files\PartiallyDone</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="wintoastlib.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Notifications.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Toast.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
