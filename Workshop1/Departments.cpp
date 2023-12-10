@@ -105,7 +105,7 @@ vector<Departments>Departments::getdptlist(string keyword, string sortColumn, bo
 
 		}
 	}
-	else {
+	if (db.res->rowsCount() <= 0) {
 		cout << "Empty!";
 		_getch();
 	}

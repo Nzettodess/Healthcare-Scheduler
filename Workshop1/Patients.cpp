@@ -150,7 +150,7 @@ vector<Patients> Patients::getplist(string keyword, string sortColumn, bool asce
 			Patientsl.push_back(tempPatients);
 		}
 	}
-	else {
+	if (db.res->rowsCount() <= 0) {
 		cout << "Empty!";
 		_getch();
 	}

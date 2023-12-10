@@ -555,6 +555,7 @@ void loginAccount() {
 		}
 	}
 }
+
 // HomeMenuPatients 
 void homePatient(Accounts a, Patients p) {
 	auto notificationCallback = [a, p]() { patientNotificationChecker(a, p); };
@@ -971,42 +972,62 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 		case 5:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be updated: ";
 			cin >> appam.AppointmentID;
-			appam.getappdataa(appam.AppointmentID);
-			if (appam.AStatus == "Succeeded") {
-				cout << "This appointment has been confirmed, thus you are no longer able to update.\n";
-				cout << "You may only cancel this appointment or make a new appointment. ";
-				_getch();
-				break;
-				
+			for (int i = 0; i < Appointments.size(); i++) {
+				if (appam.AppointmentID == Appointments[i].AppointmentID) {
+					appam.getappdataa(appam.AppointmentID);
+					if (appam.AStatus == "Succeeded") {
+						cout << "This appointment has been confirmed, thus you are no longer able to update.\n";
+						cout << "You may only cancel this appointment or make a new appointment. ";
+						_getch();
+						break;
+
+					}
+					else {
+						updateAppointmentMenu(appam.AppointmentID, a, p);
+					}
+				}
+				else {
+					cout << "This appointment does not belong to you!";
+					_getch();
+					break;
+				}
 			}
-			else {
-				updateAppointmentMenu(appam.AppointmentID, a, p);
-			}
-			
 			break;
 
 		case 6:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be cancel: ";
 			cin >> appam.AppointmentID;
+			for (int i = 0; i < Appointments.size(); i++) {
+				if (appam.AppointmentID == Appointments[i].AppointmentID) {
+					appam.getappdataa(appam.AppointmentID);
+					if (appam.AStatus == "Canceled") {
+						cout << "This appointment has been canceled, thus you are no longer able to cancel.\n";
+						_getch();
+						break;
 
-			if (appam.AStatus == "Canceled") {
-				cout << "This appointment has been canceled, thus you are no longer able to cancel.\n";
-				_getch();
-				break;
+					}
+					else if (appam.AStatus == "Failed") {
+						cout << "This appointment has been canceled, thus you are no longer able to cancel.\n";
+						_getch();
+						break;
 
+					}
+					else {
+						appam.updateapps("Canceled", appam.AppointmentID);
+						cout << "Canceled!";
+						_getch();
+						break;
+					}
+				}
+				
+				else {
+					cout << "This appointment does not belong to you!";
+					_getch();
+					break;
+				}
 			}
-			else if (appam.AStatus == "Failed") {
-				cout << "This appointment has been canceled, thus you are no longer able to cancel.\n";
-				_getch();
-				break;
+
 			
-			}
-			else {
-				appam.updateapps("Canceled", appam.AppointmentID);
-				cout << "Canceled!";
-				_getch();
-				break;
-			}
 			
 			break;
 
@@ -1258,7 +1279,28 @@ void feedbackMenu(Accounts a, Patients p) {
 		case 5:
 			cout << "Enter the FeedbackID to choose the feedback that needs to be updated: ";
 			cin >> ffm.FeedbackID;
-			updateFeedbackMenu(ffm.FeedbackID, a, p);
+
+			for (int i = 0; i < Feedback.size(); i++) {
+				if (ffm.FeedbackID == Feedback[i].FeedbackID) {
+					updateFeedbackMenu(ffm.FeedbackID, a, p);
+					break;
+				}
+				else if (Feedback[i].FeedbackID == NULL || Feedback[i].FeedbackID == 0) {
+					cout << "This feedback does not belong to you!";
+					_getch();
+					break;
+				}
+				else if (Feedback[i].FeedbackID == 0) {
+					cout << "This feedback does not belong to you!";
+					_getch();
+					break;
+				}
+				else {
+					cout << "This feedback does not belong to you!";
+					_getch();
+					break;
+				}
+			}
 			ffm.FeedbackID = -1;
 			break;
 
@@ -1966,48 +2008,59 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 		case 5:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be updated: ";
 			cin >> appam.AppointmentID;
-			appam.getappdataa(appam.AppointmentID);
-			if (appam.AStatus == "Succeeded") {
-				cout << "This appointment has been confirmed, thus you are no longer able to update.\n";
-				_getch();
-				break;
+			for (int i = 0; i < Appointments.size(); i++) {
+			if (appam.AppointmentID == Appointments[i].AppointmentID) {
+				appam.getappdataa(appam.AppointmentID);
+				appam.getappdataa(appam.AppointmentID);
+				if (appam.AStatus == "Succeeded") {
+					cout << "This appointment has been confirmed, thus you are no longer able to update.\n";
+					_getch();
+					break;
 
-			}
-			else if (appam.AStatus == "Canceled") {
-				cout << "This appointment has been canceled, thus you are no longer able to update.\n";
-				_getch();
-				break;
-			}
-			else if (appam.AStatus == "Failed") {
-				cout << "This appointment has been failed, thus you are no longer able to update.\n";
-				_getch();
-				break;
-			}
-			else {
-				switch (DASM.prompt())
-				{
-				case 1:
-					updateStatus = "Succeeded";
-					appam.updateapps(updateStatus, appam.AppointmentID);
-					cout << "Updated!";
-					updateStatus = "";
+				}
+				else if (appam.AStatus == "Canceled") {
+					cout << "This appointment has been canceled, thus you are no longer able to update.\n";
 					_getch();
-					break;
-				case 2:
-					updateStatus = "Failed";
-					appam.updateapps(updateStatus, appam.AppointmentID);
-					cout << "Updated!";
-					updateStatus = "";
-					_getch();
-					break;
-				case 3:
-					break;
-				default:
 					break;
 				}
+				else if (appam.AStatus == "Failed") {
+					cout << "This appointment has been failed, thus you are no longer able to update.\n";
+					_getch();
+					break;
+				}
+				else {
+					switch (DASM.prompt())
+					{
+					case 1:
+						updateStatus = "Succeeded";
+						appam.updateapps(updateStatus, appam.AppointmentID);
+						cout << "Updated!";
+						updateStatus = "";
+						_getch();
+						break;
+					case 2:
+						updateStatus = "Failed";
+						appam.updateapps(updateStatus, appam.AppointmentID);
+						cout << "Updated!";
+						updateStatus = "";
+						_getch();
+						break;
+					case 3:
+						break;
+					default:
+						break;
+					}
 
+					break;
+				}
+			}
+			else {
+				cout << "This appointment does not belong to you!";
+				_getch();
 				break;
 			}
+		}
+			
 			break;
 
 		case 6:

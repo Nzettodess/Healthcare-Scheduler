@@ -132,7 +132,8 @@ vector<Appointments> Appointments::getapplistp(int PatientID, string sortColumn,
 		}
 
 	}
-	else {
+
+	if (db.res->rowsCount() <= 0) {
 		cout << "Empty!";
 		_getch();
 	}
@@ -168,7 +169,7 @@ vector<Appointments> Appointments::getapplistd(int DoctorID, string sortColumn, 
 		}
 
 	}
-	else {
+	if (db.res->rowsCount() <= 0) {
 		cout << "Empty!";
 		_getch();
 	}
@@ -197,7 +198,7 @@ vector<Appointments> Appointments::getappdatapd(int PatientID, int DoctorID) {
 			Appointmentsl.push_back(tempAppointments);
 		}
 	}
-	else {
+	if (db.res->rowsCount() <= 0) {
 		cout << "Empty!";
 		_getch();
 	}
@@ -230,7 +231,7 @@ vector<Appointments> Appointments::getapplistall(string sortColumn, bool ascendi
 			Appointmentsl.push_back(tempAppointments);
 		}
 	}
-	else {
+	if (db.res->rowsCount() <= 0) {
 		cout << "Empty!";
 		_getch();
 	}

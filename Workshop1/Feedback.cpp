@@ -101,8 +101,8 @@ vector<Feedback> Feedback::getflistp(int PatientID, string sortColumn, bool asce
 			Feedbackl.push_back(tempFeedback);
 		}
 	}
-	else {
-		cout << "You dont have any feedback in history!";
+	if (db.res->rowsCount() <= 0) {
+		cout << "Empty!";
 		_getch();
 	}
 	db.~DatabaseConnector();
@@ -136,8 +136,8 @@ vector<Feedback> Feedback::getflistd(int DoctorID, string sortColumn, bool ascen
 			Feedbackl.push_back(tempFeedback);
 		}
 	}
-	else {
-		cout << "You dont have any feedback yet!";
+	if (db.res->rowsCount() <= 0) {
+		cout << "Empty!";
 		_getch();
 	}
 	db.~DatabaseConnector();
@@ -178,8 +178,8 @@ vector<Feedback> Feedback::getflistall(string sortColumn, bool ascending) {
 			Feedbackl.push_back(tempFeedback);
 		}
 	}
-	else {
-		cout << "You dont have any feedback yet!";
+	if (db.res->rowsCount() <= 0) {
+		cout << "Empty!";
 		_getch();
 	}
 	db.~DatabaseConnector();

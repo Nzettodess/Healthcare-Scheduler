@@ -122,7 +122,7 @@ vector<Doctors> Doctors::getdlist(string keyword, string sortColumn, bool ascend
 			Doctorsl.push_back(tempDoctors);
 		}
 	}
-	else {
+	if (db.res->rowsCount() <= 0) {
 		cout << "Empty!";
 		_getch();
 	}

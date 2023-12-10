@@ -165,10 +165,12 @@ vector<Accounts> Accounts::getalist(string KeyWord, string sortColumn, bool asce
 			Accountsl.push_back(tempAccounts);
 		}
 	}
-	else {
+
+	if (db.res->rowsCount() <= 0) {
 		cout << "Empty!";
 		_getch();
 	}
+
 	db.~DatabaseConnector();
 	return Accountsl;
 }
