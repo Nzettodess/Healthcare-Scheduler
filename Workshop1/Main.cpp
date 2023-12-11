@@ -112,9 +112,11 @@ bool hasAlphabet(const string& s);
 bool hasDigit(const string& s);
 bool validateFormat(const string& input, const string& formatRegex);
 bool isValidDate(const string& year, const string& month, const string& day);
+bool isValidDOB(const std::string& year, const std::string& month, const std::string& day);
 bool isValidTime(const string& hours, const string& minutes, const string& seconds);
 bool isValidRatings(int Ratings);
 bool isNumeric(const std::string& str);
+bool isLeapYear(int year);
 
 //Function Defininition
 
@@ -1020,8 +1022,10 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 		case 6:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be cancel: ";
 			cin >> appam.AppointmentID;
+			foundAppointment = false;
 			for (int i = 0; i < Appointments.size(); i++) {
 				if (appam.AppointmentID == Appointments[i].AppointmentID) {
+					foundAppointment = true;
 					appam.getappdataa(appam.AppointmentID);
 					if (appam.AStatus == "Canceled") {
 						cout << "This appointment has been canceled, thus you are no longer able to cancel.\n";
@@ -1042,14 +1046,13 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 						break;
 					}
 				}
-				
-				else {
-					cout << "This appointment does not belong to you!";
-					_getch();
-					break;
-				}
+			
 			}
-
+			if (!foundAppointment) {
+				cout << "This appointment does not belong to you!";
+				_getch();
+			}
+			break;
 			
 			
 			break;
@@ -1065,6 +1068,7 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 void addAppointmentMenu(Accounts a, Patients p) {
 
 	Appointments appaam;
+	appaam.DoctorID = -1;
 	appaam.PatientID = p.PatientID;
 	//Add Appointment Menu
 	Menu AAM;
@@ -1119,7 +1123,7 @@ void addAppointmentMenu(Accounts a, Patients p) {
 			break;
 
 		case 4:
-			if (appaam.ADate.empty() || appaam.ATime.empty() || to_string(appaam.DoctorID).empty()) {
+			if (appaam.ADate.empty() || appaam.ATime.empty() || to_string(appaam.DoctorID).empty() || appaam.DoctorID == -1) {
 				cout << "Some required details should not be NULl or Space!!";
 				_getch();
 				break;
@@ -1227,6 +1231,7 @@ void updateAppointmentMenu(int AppointmentID, Accounts a, Patients p) {
 void feedbackMenu(Accounts a, Patients p) {
 	Feedback ffm;
 	vector<Feedback> Feedback;
+	bool foundAppointment;
 	string displayString = "", sortColumn = "FeedbackID";
 	bool ascending = true;
 
@@ -1311,29 +1316,20 @@ void feedbackMenu(Accounts a, Patients p) {
 		case 5:
 			cout << "Enter the FeedbackID to choose the feedback that needs to be updated: ";
 			cin >> ffm.FeedbackID;
-
+			foundAppointment = false;
 			for (int i = 0; i < Feedback.size(); i++) {
 				if (ffm.FeedbackID == Feedback[i].FeedbackID) {
+					foundAppointment = true;
 					updateFeedbackMenu(ffm.FeedbackID, a, p);
 					break;
 				}
-				else if (Feedback[i].FeedbackID == NULL || Feedback[i].FeedbackID == 0) {
-					cout << "This feedback does not belong to you!";
-					_getch();
-					break;
-				}
-				else if (Feedback[i].FeedbackID == 0) {
-					cout << "This feedback does not belong to you!";
-					_getch();
-					break;
-				}
-				else {
-					cout << "This feedback does not belong to you!";
-					_getch();
-					break;
-				}
+				
 			}
 			ffm.FeedbackID = -1;
+			if (!foundAppointment) {
+				cout << "This appointment does not belong to you!";
+				_getch();
+			}
 			break;
 
 		case 6:
@@ -1349,6 +1345,7 @@ void addFeedbackMenu(Accounts a, Patients p) {
 	Feedback fafm;
 	p.getpdatap(p.PatientID);
 	fafm.PatientID = p.PatientID;
+	fafm.DoctorID = -1;
 	//Add Feedback Menu 
 	Menu AFM;
 	AFM.header = "Make Feedback\n\n";
@@ -1410,7 +1407,7 @@ void addFeedbackMenu(Accounts a, Patients p) {
 			break;
 
 		case 5:
-			if (to_string(fafm.Ratings).empty() || fafm.FDate.empty() || to_string(fafm.DoctorID).empty()) {
+			if (to_string(fafm.Ratings).empty() || fafm.FDate.empty() || to_string(fafm.DoctorID).empty() || fafm.DoctorID == -1) {
 				cout << "Some required details should not be NULl or Space!!";
 				_getch();
 				break;
@@ -1955,7 +1952,7 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 
 	//Show the list at first encounter
 	Appointments = Appointments::getapplistd(d.DoctorID, sortColumn, ascending);
-
+	bool foundAppointment;
 	//AppointmentMenu
 	Menu AM;
 	AM.header = "Appointment\n\n";
@@ -2043,15 +2040,30 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 		case 4:
 			cout << "Enter the PatientID to make an follow up appointment: ";
 			cin >> appam.PatientID;
-			addAppointmentMenu(a, d, appam.PatientID);
+			
+
+			foundAppointment = false;
+			for (int i = 0; i < Appointments.size(); i++) {
+				if (appam.PatientID == Appointments[i].PatientID) {
+					foundAppointment = true;
+					appam.getappdataa(appam.PatientID);
+					addAppointmentMenu(a, d, appam.PatientID);
+				}
+
+			}
+			if (!foundAppointment) {
+				cout << "This appointment does not belong to you!";
+				_getch();
+			}
 			break;
 
 		case 5:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be updated: ";
 			cin >> appam.AppointmentID;
+			foundAppointment = false;
 			for (int i = 0; i < Appointments.size(); i++) {
 			if (appam.AppointmentID == Appointments[i].AppointmentID) {
-				appam.getappdataa(appam.AppointmentID);
+				foundAppointment = true;
 				appam.getappdataa(appam.AppointmentID);
 				if (appam.AStatus == "Succeeded") {
 					cout << "This appointment has been confirmed, thus you are no longer able to update.\n";
@@ -2095,19 +2107,31 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 					break;
 				}
 			}
-			else {
+			
+		}
+			if (!foundAppointment) {
 				cout << "This appointment does not belong to you!";
 				_getch();
-				break;
 			}
-		}
-			
 			break;
 
 		case 6:
 			cout << "Enter the PatientID to Update Their Profile Details: ";
 			cin >> appam.PatientID;
-			updatePatientProfileMenu(a, d, appam.PatientID);
+			
+			foundAppointment = false;
+			for (int i = 0; i < Appointments.size(); i++) {
+				if (appam.PatientID == Appointments[i].PatientID) {
+					foundAppointment = true;
+					appam.getappdataa(appam.PatientID);
+					updatePatientProfileMenu(a, d, appam.PatientID);
+				}
+
+			}
+			if (!foundAppointment) {
+				cout << "This appointment does not belong to you!";
+				_getch();
+			}
 			break;
 
 		case 7:
@@ -2526,22 +2550,37 @@ void accountsManager() {
 		case 6:
 			cout << "Enter the AccountID to choose the account that needs to be updated: ";
 			cin >> a.AccountID;
-			accountEditMenu(a.AccountID);
+			if (cin.fail()) {
+				cin.clear(); // clear the error flag
+				std::cin.ignore(100, '\n'); // discard invalid input
+			}
+			else {
+				accountEditMenu(a.AccountID);
+			}
+			
 			break;
 
 		case 7:
 			cout << "Enter the AccountID to choose the account that needs to be remove: ";
-			cin >> a.AccountID;
-			cout << "Delete the account? (y/n)";
-			char confirm;
-			confirm = _getch();
-			if (confirm == 'Y' || confirm == 'y') {
-				Accounts::removeAccount(a.AccountID);
-				cout << "Done!";
-				_getch();
+			cin >> a.AccountID; 
+			
+			if (cin.fail()) {
+				cin.clear(); // clear the error flag
+				std::cin.ignore(100, '\n'); // discard invalid input
+			}
+			else {
+				cout << "Delete the account? (y/n)";
+				char confirm;
+				confirm = _getch();
+				if (confirm == 'Y' || confirm == 'y') {
+					Accounts::removeAccount(a.AccountID);
+					cout << "Done!";
+					_getch();
+					break;
+				}
 				break;
 			}
-			break;
+			
 
 		case 8:
 			return;
@@ -2552,8 +2591,9 @@ void accountsManager() {
 	};
 }
 void addAccounts() {
-	Accounts accreg;
 
+	Accounts accreg;
+	accreg.ARole = -1;
 	Menu RM1;
 	RM1.header = "Add Account\n\n";
 	RM1.addOption("->> Username");
@@ -2616,7 +2656,7 @@ void addAccounts() {
 			break;
 
 		case 4:
-			if (accreg.Username.empty() || accreg.Password.empty() || to_string(accreg.ARole).empty()) {
+			if (accreg.Username.empty() || accreg.Password.empty() || to_string(accreg.ARole).empty() || accreg.ARole == -1) {
 			cout << "Some required details should not be NULl or Space!!";
 			_getch();
 			break;
@@ -2884,6 +2924,8 @@ void addDoctors() {
 
 	Doctors profiled;
 	Departments dpt;
+	profiled.DepartmentID = -1;
+	profiled.AccountID = -1;
 	Menu RM3;
 	RM3.header = "Add Doctor\n\n";
 	RM3.addOption("->> Name [Required]");
@@ -2939,7 +2981,7 @@ void addDoctors() {
 			break;
 
 		case 6:
-			if (profiled.DName.empty() || profiled.DTelephoneNo.empty() || profiled.Specialization.empty() || to_string(profiled.DepartmentID).empty() || to_string(profiled.AccountID).empty()) {
+			if (profiled.DName.empty() || profiled.DTelephoneNo.empty() || profiled.Specialization.empty() || to_string(profiled.DepartmentID).empty() || to_string(profiled.AccountID).empty() || profiled.DepartmentID == -1 || profiled.AccountID == -1)  {
 				cout << "Some required details should not be NULl or Space!!";
 				_getch();
 				break;
@@ -3223,7 +3265,7 @@ void patientsManager() {
 }
 void addPatients() {
 	Patients profilep;
-
+	profilep.AccountID = -1;
 	ostringstream weightStream, heightStream;
 	bool isMale = true;
 	//Register Menu 2 (Into Patient)
@@ -3284,7 +3326,11 @@ void addPatients() {
 			cout << "Please enter your date of birth (YYYY-MM-DD): ";
 			cin >> profilep.DateOfBirth;
 
-			if (validateFormat(profilep.DateOfBirth, R"(\d{4}-\d{2}-\d{2})")) {
+			if (validateFormat(profilep.DateOfBirth, 
+				R"(\d{4}-\d{2}-\d{2})") && 
+				isValidDOB(profilep.DateOfBirth.substr(0, 4), 
+					profilep.DateOfBirth.substr(6, 2), 
+					profilep.DateOfBirth.substr(9, 2))) {
 				cout << "Valid format." << endl;
 				RM2.setValue(3, profilep.DateOfBirth);
 				break;
@@ -3320,7 +3366,7 @@ void addPatients() {
 			break;
 
 		case 8:
-			if (profilep.PName.empty() || profilep.PTelephoneNo.empty() || profilep.DateOfBirth.empty() || to_string(profilep.AccountID).empty()) {
+			if (profilep.PName.empty() || profilep.PTelephoneNo.empty() || profilep.DateOfBirth.empty() || to_string(profilep.AccountID).empty() || profilep.AccountID == -1) {
 				cout << "Some required details should not be NULl or Space!!";
 				_getch();
 				break;
@@ -3867,6 +3913,7 @@ void appointmentsManager(){
 void addAppointments(){
 	Appointments appaam;
 	string AStatus = "Pending";
+	appaam.PatientID = -1;
 	//Add Appointment Menu
 	Menu AAM;
 	AAM.header = "Make Appointment \n\n";
@@ -3952,7 +3999,7 @@ void addAppointments(){
 			AAM.setValue(4, to_string(appaam.PatientID));
 			break;
 		case 6:
-			if (appaam.ADate.empty() || appaam.ATime.empty() || to_string(appaam.DoctorID).empty() || to_string(appaam.PatientID).empty()) {
+			if (appaam.ADate.empty() || appaam.ATime.empty() || to_string(appaam.DoctorID).empty() || to_string(appaam.PatientID).empty() || appaam.PatientID == -1) {
 				cout << "Some required details should not be NULl or Space!!";
 				_getch();
 				break;
@@ -4132,19 +4179,19 @@ void feedbackManager(){
 		if (displayString == "") {
 			displayString = "\nSearch Result: \n\n";
 			stringstream tmpString;
-			tmpString << fixed << setprecision(2) << setw(5) << "FeedbackID" << "|" 
-				<< setw(12) << " Ratings" << "|" 
-				<< setw(15) << "Date" << "|" 
-				<< setw(10) << "DoctorID" << "|" 
+			tmpString << fixed << setprecision(2) << setw(5) << "FeedbackID" << "|"
+				<< setw(12) << " Ratings" << "|"
+				<< setw(15) << "Date" << "|"
+				<< setw(10) << "DoctorID" << "|"
 				<< setw(10) << "PatientID" << "|"
 				<< setw(60) << "Comments" << "|" << endl;
 
 			for (int i = 0; i < Feedback.size(); i++) {
-				tmpString << setw(10) << Feedback[i].FeedbackID << "|" 
-					<< setw(12) << Feedback[i].Ratings << "|" 
-					<< setw(15) << Feedback[i].FDate << "|" 
-					<< setw(10) << Feedback[i].DoctorID << "|" 
-					<< setw(10) << Feedback[i].PatientID << "|" 
+				tmpString << setw(10) << Feedback[i].FeedbackID << "|"
+					<< setw(12) << Feedback[i].Ratings << "|"
+					<< setw(15) << Feedback[i].FDate << "|"
+					<< setw(10) << Feedback[i].DoctorID << "|"
+					<< setw(10) << Feedback[i].PatientID << "|"
 					<< setw(60) << Feedback[i].Comments << "|" << endl;
 			}
 			displayString += tmpString.str();
@@ -4188,7 +4235,14 @@ void feedbackManager(){
 		case 5:
 			cout << "Enter the FeedbackID to choose the feedback that needs to be updated: ";
 			cin >> ffm.FeedbackID;
-			updateFeedback(ffm.FeedbackID);
+			if (cin.fail()) {
+				cin.clear(); // clear the error flag
+				std::cin.ignore(100, '\n'); // discard invalid input
+			}
+			else {
+				updateFeedback(ffm.FeedbackID);
+
+			}
 			ffm.FeedbackID = -1;
 			break;
 		case 6:
@@ -4222,7 +4276,8 @@ void feedbackManager(){
 void addFeedback(){
 
 	Feedback fafm;
-	
+	fafm.DoctorID = -1;
+	fafm.PatientID = -1;
 	//Add Feedback Menu 
 	Menu AFM;
 	AFM.header = "Make Feedback\n\n";
@@ -4290,7 +4345,7 @@ void addFeedback(){
 			break;
 
 		case 6:
-			if (to_string(fafm.Ratings).empty() || fafm.FDate.empty() || to_string(fafm.DoctorID).empty() || to_string(fafm.PatientID).empty()) {
+			if (to_string(fafm.Ratings).empty() || fafm.FDate.empty() || to_string(fafm.DoctorID).empty() || to_string(fafm.PatientID).empty() || fafm.DoctorID == -1 || fafm.PatientID == -1) {
 				cout << "Some required details should not be NULl or Space!!";
 				_getch();
 				break;
@@ -4502,8 +4557,19 @@ void doctorList() {
 		case 5:
 			cout << "Please enter the DoctorID you would like to schedule an appointment/ make a feedback with: ";
 			cin >> doctorSelected;
-			return;
-			break;
+			if (isNumeric(to_string(doctorSelected))) {
+				return;
+				break;
+			}
+			else
+			{
+				cout << "Error of your select";
+				cin.clear(); // clear the error flag
+				std::cin.ignore(100, '\n');
+				_getch();
+				break;
+			}
+			
 
 		case 6:
 			return;
@@ -4603,6 +4669,18 @@ void accountList() {
 		case 5:
 			cout << "Please enter the AccountID you would like to select: ";
 			cin >> accountSelected;
+			if (isNumeric(to_string(accountSelected))) {
+				return;
+				break;
+			}
+			else
+			{
+				cout << "Error of your select";
+				cin.clear(); // clear the error flag
+				std::cin.ignore(100, '\n');
+				_getch();
+				break;
+			}
 			return;
 			break;
 
@@ -4733,6 +4811,18 @@ void patientList() {
 		case 5:
 			cout << "Please enter the PatientID you would like to select: ";
 			cin >> patientSelected;
+			if (isNumeric(to_string(patientSelected)) ){
+				return;
+				break;
+			}
+			else
+			{
+				cout << "Error of your select";
+				cin.clear(); // clear the error flag
+				std::cin.ignore(100, '\n');
+				_getch();
+				break;
+			}
 			return;
 			break;
 
@@ -5077,20 +5167,26 @@ bool isValidDate(const std::string& year, const std::string& month, const std::s
 	int monthInt = std::stoi(month);
 	int dayInt = std::stoi(day);
 
+	// Array to store the number of days in each month
+	int daysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	// Check for leap year and adjust February's days accordingly
+	if (monthInt == 2) {
+		daysInMonth[2] = isLeapYear(yearInt) ? 29 : 28;
+	}
+
 	// Basic checks for month and day
-	if ((monthInt < 1 || monthInt > 12) || (dayInt < 1 || dayInt > 31)) {
+	if ((monthInt < 1 || monthInt > 12) || (dayInt < 1 || dayInt > daysInMonth[monthInt])) {
 		return false;
 	}
 
-	// Get the current time
+	// Check if the specified date is in the future (up to 1 year)
 	auto now = std::chrono::system_clock::now();
 	std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
 
-	// Convert the current time to a struct tm
 	struct tm parts;
 	localtime_s(&parts, &currentTime);
 
-	// Check if the specified date is in the future (up to 1 years)
 	return ((yearInt > parts.tm_year + 1900) && (yearInt <= parts.tm_year + 1901)) ||
 		(yearInt == parts.tm_year + 1900 && monthInt > parts.tm_mon + 1) ||
 		(yearInt == parts.tm_year + 1900 && monthInt == parts.tm_mon + 1 && dayInt > parts.tm_mday);
@@ -5105,6 +5201,37 @@ bool isValidTime(const string& hours, const string& minutes, const string& secon
 		(minutesInt >= 0 && minutesInt <= 59) &&
 		(secondsInt >= 0 && secondsInt <= 59);
 }
+bool isValidDOB(const std::string& year, const std::string& month, const std::string& day) {
+	int yearInt = std::stoi(year);
+	int monthInt = std::stoi(month);
+	int dayInt = std::stoi(day);
+
+	// Basic checks for month and day
+	if ((monthInt < 1 || monthInt > 12) || (dayInt < 1 || dayInt > 31)) {
+		return false;
+	}
+
+	// Array to store the number of days in each month
+	int daysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	// Check for leap year and adjust February's days accordingly
+	if (monthInt == 2) {
+		daysInMonth[2] = isLeapYear(yearInt) ? 29 : 28;
+	}
+
+	// Check if the specified date is within the range of 1923 to today
+	auto now = std::chrono::system_clock::now();
+	std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+
+	struct tm parts;
+	localtime_s(&parts, &currentTime);
+
+	// Check if the date is in the future or not within the range
+	return ((yearInt >= 1923) && (yearInt <= parts.tm_year + 1900) &&
+		(yearInt < parts.tm_year + 1900 ||
+			(yearInt == parts.tm_year + 1900 && monthInt < parts.tm_mon + 1) ||
+			(yearInt == parts.tm_year + 1900 && monthInt == parts.tm_mon + 1 && dayInt <= parts.tm_mday)));
+}
 bool isValidRatings(int Ratings) {
 	if (Ratings >= 1 && Ratings <= 5) {
 		return true;
@@ -5114,5 +5241,8 @@ bool isValidRatings(int Ratings) {
 bool isNumeric(const std::string& str) {
 	std::istringstream ss(str);
 	double value;
-	return ss >> value >> std::ws && ss.eof();
+	return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
+}
+bool isLeapYear(int year) {
+	return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
