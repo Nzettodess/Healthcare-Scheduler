@@ -79,7 +79,7 @@ bool Accounts::loginacc() {
 
 	if (db.res->rowsCount() == 1)
 	{
-		while (db.res->next()) { // **
+		while (db.res->next()) {
 			AccountID = db.res->getInt("AccountID");
 			Username = db.res->getString("Username");
 			Password = db.res->getString("Password");

@@ -230,7 +230,7 @@ void registerPatientProfile(int AccountID) {
 	Menu RM2;
 	RM2.header = "Patient Profile Registration\n\n";
 	RM2.addOption("->> Name [Required]");
-	RM2.addOption("->> Mobile Number (000-0000000) [Required]");
+	RM2.addOption("->> Mobile Number (010-0000000) [Required]");
 	RM2.addOption("->> Toggle to Change Your Gender");
 	RM2.setValue(2, "Male");
 	RM2.addOption("->> Date of Birth (YYYY-MM-DD) [Required]");
@@ -260,7 +260,7 @@ void registerPatientProfile(int AccountID) {
 			break;
 
 		case 2:
-			cout << "Please enter your mobile number (000-0000000): ";
+			cout << "Please enter your mobile number (010-0000000): ";
 			cin >> profilep.PTelephoneNo;
 			if (validateFormat(profilep.PTelephoneNo, R"(\d{3}-\d{7})") && profilep.PTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
@@ -313,11 +313,20 @@ void registerPatientProfile(int AccountID) {
 			break;
 
 		case 7:
-			cout <<"\nNow inserting and redirecting you to login...";
-			_getch();
-			profilep.insertp();
-			loginAccount();
-			break;
+			if (profilep.PName.empty() || profilep.PTelephoneNo.empty() || profilep.DateOfBirth.empty()) {
+				cout << "Some required details should not be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				cout << "\nNow inserting and press any key to redirecte you to login...";
+				_getch();
+				profilep.insertp();
+				loginAccount();
+				break;
+
+			}
+			
 
 		default:
 			break;
@@ -335,7 +344,7 @@ void registerDoctorProfile(int AccountID) {
 	Menu RM3;
 	RM3.header = "Doctor Profile Registration\n\n";
 	RM3.addOption("->> Name [Required]");
-	RM3.addOption("->> Mobile Number (000-0000000) [Required]");
+	RM3.addOption("->> Mobile Number (010-0000000) [Required]");
 	RM3.addOption("->> Specialization [Required]");
 	RM3.addOption("->> DepartmentID [Required]");
 	RM3.addOption("->> Confirm");
@@ -352,7 +361,7 @@ void registerDoctorProfile(int AccountID) {
 			break;
 
 		case 2:
-			cout << "Please enter your mobile number (000-0000000): ";
+			cout << "Please enter your mobile number (010-0000000): ";
 			cin >> profiled.DTelephoneNo;
 
 			if (validateFormat(profiled.DTelephoneNo, R"(\d{3}-\d{7})") && profiled.DTelephoneNo.substr(0, 2) == "01") {
@@ -380,11 +389,20 @@ void registerDoctorProfile(int AccountID) {
 			break;
 
 		case 5:
-			cout << "\nNow inserting and redirecting you to login...";
-			_getch();
-			profiled.insertd();
-			loginAccount();
-			break;
+			if (profiled.DName.empty() || profiled.DTelephoneNo.empty() || profiled.Specialization.empty()) {
+				cout << "Some required details should not be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				cout << "\nNow inserting and press any key to redirecte you to login...";
+				_getch();
+				profiled.insertd();
+				loginAccount();
+				break;
+
+			}
+			
 
 		default:
 			break;
@@ -683,7 +701,7 @@ Patients patientProfileMenu(Accounts a, Patients p) {
 	Menu PPM;
 	PPM.header = "Edit Your Profile Details\n\n";
 	PPM.addOption("->> Name");
-	PPM.addOption("->> Mobile Number (000-0000000)");
+	PPM.addOption("->> Mobile Number (010-0000000)");
 	PPM.addOption("->> Toogle To Change Your Gender");
 	PPM.addOption("->> Date of Birth (YYYY-MM-DD)");
 	PPM.addOption("->> Height (cm)");
@@ -721,7 +739,7 @@ Patients patientProfileMenu(Accounts a, Patients p) {
 			break;
 
 		case 2:
-			cout << "Please enter your mobile number (000-0000000): ";
+			cout << "Please enter your mobile number (010-0000000): ";
 			cin >> temp.PTelephoneNo;
 			if (validateFormat(temp.PTelephoneNo, R"(\d{3}-\d{7})") && temp.PTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
@@ -888,7 +906,7 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 
 	//Show the list at first encounter
 	Appointments = Appointments::getapplistp(p.PatientID, sortColumn, ascending);
-
+	bool foundAppointment;
 	//AppointmentMenu
 	Menu AM;
 	AM.header = "Appointment\n\n";
@@ -972,8 +990,12 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 		case 5:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be updated: ";
 			cin >> appam.AppointmentID;
+			
+			foundAppointment = false;
+
 			for (int i = 0; i < Appointments.size(); i++) {
 				if (appam.AppointmentID == Appointments[i].AppointmentID) {
+					foundAppointment = true;
 					appam.getappdataa(appam.AppointmentID);
 					if (appam.AStatus == "Succeeded") {
 						cout << "This appointment has been confirmed, thus you are no longer able to update.\n";
@@ -986,11 +1008,12 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 						updateAppointmentMenu(appam.AppointmentID, a, p);
 					}
 				}
-				else {
-					cout << "This appointment does not belong to you!";
-					_getch();
-					break;
-				}
+				
+			}
+
+			if (!foundAppointment) {
+				cout << "This appointment does not belong to you!";
+				_getch();
 			}
 			break;
 
@@ -1047,7 +1070,7 @@ void addAppointmentMenu(Accounts a, Patients p) {
 	Menu AAM;
 	AAM.header = "Make Appointment \n\n";
 	AAM.addOption("->> Date (YYYY-MM-DD)");
-	AAM.addOption("->> Time (HH:MM)(24 Hour Format)");
+	AAM.addOption("->> Time (08:00 - 18:00)");
 	AAM.addOption("->> DoctorID");
 	AAM.addOption("->> Confirm");
 	AAM.addOption("->> Back");
@@ -1096,10 +1119,19 @@ void addAppointmentMenu(Accounts a, Patients p) {
 			break;
 
 		case 4:
-			appaam.insertapp("Pending");
-			cout << "Completed!";
-			_getch();
-			break;
+			if (appaam.ADate.empty() || appaam.ATime.empty() || to_string(appaam.DoctorID).empty()) {
+				cout << "Some required details should not be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				appaam.insertapp("Pending");
+				cout << "Completed!";
+				_getch();
+				break;
+
+			}
+			
 		case 5:
 			return;
 		default:
@@ -1117,9 +1149,9 @@ void updateAppointmentMenu(int AppointmentID, Accounts a, Patients p) {
 
 	//Update Appointment Menu 
 	Menu UAM;
-	UAM.header = "Edit Account Details\n\n";
+	UAM.header = "Update Appointment Details\n\n";
 	UAM.addOption("->> Date (YYYY-MM-DD)");
-	UAM.addOption("->> Time (HH:MM)(24 Hour Format)");
+	UAM.addOption("->> Time (08:00 - 18:00)");
 	UAM.addOption("->> DoctorID");
 	UAM.addOption("->> Confirm");
 	UAM.addOption("->> Back");
@@ -1378,10 +1410,19 @@ void addFeedbackMenu(Accounts a, Patients p) {
 			break;
 
 		case 5:
-			fafm.insertf();
-			cout << "Completed!";
-			_getch();
-			break;
+			if (to_string(fafm.Ratings).empty() || fafm.FDate.empty() || to_string(fafm.DoctorID).empty()) {
+				cout << "Some required details should not be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				fafm.insertf();
+				cout << "Completed!";
+				_getch();
+				break;
+
+			}
+			
 		case 6:
 			return;
 		default:
@@ -1398,7 +1439,7 @@ void updateFeedbackMenu(int FeedbackID, Accounts a, Patients p) {
 	fufm.PatientID = p.PatientID;
 	//Update Feedback Menu 
 	Menu UFM;
-	UFM.header = "Edit Account Details\n\n";
+	UFM.header = "Update Feedback Details\n\n";
 	UFM.addOption("->> Ratings (1-5)");
 	UFM.addOption("->> Comments [Optional]");
 	UFM.addOption("->> Date [YYYY-MM-DD] Press to get current date: ");
@@ -1764,7 +1805,7 @@ Doctors doctorProfileMenu(Accounts a, Doctors d) {
 	Menu DPM;
 	DPM.header = "Edit Your Profile Details\n\n";
 	DPM.addOption("->> Name");
-	DPM.addOption("->> Mobile Number (000-0000000)");
+	DPM.addOption("->> Mobile Number (010-0000000)");
 	DPM.addOption("->> Specialization");
 	DPM.addOption("->> Confirm");
 	DPM.addOption("->> Back");
@@ -1785,7 +1826,7 @@ Doctors doctorProfileMenu(Accounts a, Doctors d) {
 			break;
 
 		case 2:
-			cout << "Please enter your mobile number (000-0000000): ";
+			cout << "Please enter your mobile number (010-0000000): ";
 			cin >> temp.DTelephoneNo;
 			if (validateFormat(temp.DTelephoneNo, R"(\d{3}-\d{7})") && temp.DTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
@@ -2086,7 +2127,7 @@ void addAppointmentMenu(Accounts a, Doctors d, int PatientID) {
 	Menu AAM;
 	AAM.header = "Make Follow Up Appointment \n\n";
 	AAM.addOption("->> Date (YYYY-MM-DD)");
-	AAM.addOption("->> Time (HH:MM)(24 Hour Format)");
+	AAM.addOption("->> Time (08:00 - 18:00)");
 	AAM.addOption("->> Confirm");
 	AAM.addOption("->> Back");
 	AAM.footer = "\nEnter the required data accordingly and confirm once done.";
@@ -2158,9 +2199,9 @@ Patients updatePatientProfileMenu(Accounts a, Doctors d, int PatientID) {
 
 	//PatientProfileMenu
 	Menu PPM;
-	PPM.header = "Edit Your Profile Details\n\n";
+	PPM.header = "Edit Patients Profile Details\n\n";
 	PPM.addOption("->> Name");
-	PPM.addOption("->> Mobile Number (000-0000000)");
+	PPM.addOption("->> Mobile Number (010-0000000)");
 	PPM.addOption("->> Gender");
 	PPM.addOption("->> Date of Birth (YYYY-MM-DD)");
 	PPM.addOption("->> Height (cm)");
@@ -2330,7 +2371,7 @@ void feedbackMenu(Accounts a, Doctors d) {
 }
 
 
-//HomeMenuAdmin // todo** stat
+//HomeMenuAdmin 
 void homeAdmin(Accounts aa) {
 	//HomeMenuAdmin
 	Menu HMA;
@@ -2575,10 +2616,19 @@ void addAccounts() {
 			break;
 
 		case 4:
+			if (accreg.Username.empty() || accreg.Password.empty() || to_string(accreg.ARole).empty()) {
+			cout << "Some required details should not be NULl or Space!!";
+			_getch();
+			break;
+		}
+			  else {
 			accreg.AccountID = accreg.insertacc();
 			cout << "Done!";
 			_getch();
 			break;
+
+		}
+			
 
 		case 5:
 			return;
@@ -2837,7 +2887,7 @@ void addDoctors() {
 	Menu RM3;
 	RM3.header = "Add Doctor\n\n";
 	RM3.addOption("->> Name [Required]");
-	RM3.addOption("->> Mobile Number (000-0000000) [Required]");
+	RM3.addOption("->> Mobile Number (010-0000000) [Required]");
 	RM3.addOption("->> Specialization [Required]");
 	RM3.addOption("->> DepartmentID [Required]");
 	RM3.addOption("->> AccountID [Required]");
@@ -2856,7 +2906,7 @@ void addDoctors() {
 			break;
 
 		case 2:
-			cout << "Please enter the mobile number (000-0000000): ";
+			cout << "Please enter the mobile number (010-0000000): ";
 			cin >> profiled.DTelephoneNo;
 
 			if (validateFormat(profiled.DTelephoneNo, R"(\d{3}-\d{7})") && profiled.DTelephoneNo.substr(0, 2) == "01") {
@@ -2889,10 +2939,19 @@ void addDoctors() {
 			break;
 
 		case 6:
-			profiled.insertd();
-			cout << "Done!";
-			_getch();
-			break;
+			if (profiled.DName.empty() || profiled.DTelephoneNo.empty() || profiled.Specialization.empty() || to_string(profiled.DepartmentID).empty() || to_string(profiled.AccountID).empty()) {
+				cout << "Some required details should not be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				profiled.insertd();
+				cout << "Done!";
+				_getch();
+				break;
+
+			}
+			
 		case 7:
 			return;
 			break;
@@ -2913,7 +2972,7 @@ void doctorProfileMenu(int DoctorID) {
 	Menu DPM;
 	DPM.header = "Doctor Profile Update\n\n";
 	DPM.addOption("->> Name");
-	DPM.addOption("->> Mobile Number (000-0000000)");
+	DPM.addOption("->> Mobile Number (010-0000000)");
 	DPM.addOption("->> Specialization");
 	DPM.addOption("->> DepartmentID");
 	DPM.addOption("->> AccountID");
@@ -2938,7 +2997,7 @@ void doctorProfileMenu(int DoctorID) {
 			break;
 
 		case 2:
-			cout << "Please enter your mobile number (000-0000000): ";
+			cout << "Please enter your mobile number (010-0000000): ";
 			cin >> temp.DTelephoneNo;
 			if (validateFormat(temp.DTelephoneNo, R"(\d{3}-\d{7})") && temp.DTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
@@ -3171,7 +3230,7 @@ void addPatients() {
 	Menu RM2;
 	RM2.header = "Add Patient\n\n";
 	RM2.addOption("->> Name [Required]");
-	RM2.addOption("->> Mobile Number (000-0000000) [Required]");
+	RM2.addOption("->> Mobile Number (010-0000000) [Required]");
 	RM2.addOption("->> Toggle to Change Your Gender");
 	RM2.setValue(2, "Male");
 	RM2.addOption("->> Date of Birth (YYYY-MM-DD) [Required]");
@@ -3203,7 +3262,7 @@ void addPatients() {
 			break;
 
 		case 2:
-			cout << "Please enter your mobile number (000-0000000): ";
+			cout << "Please enter your mobile number (010-0000000): ";
 			cin >> profilep.PTelephoneNo;
 			if (validateFormat(profilep.PTelephoneNo, R"(\d{3}-\d{7})") && profilep.PTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
@@ -3261,10 +3320,19 @@ void addPatients() {
 			break;
 
 		case 8:
-			profilep.insertp();
-			cout << "Done!";
-			_getch();
-			break;
+			if (profilep.PName.empty() || profilep.PTelephoneNo.empty() || profilep.DateOfBirth.empty() || to_string(profilep.AccountID).empty()) {
+				cout << "Some required details should not be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				profilep.insertp();
+				cout << "Done!";
+				_getch();
+				break;
+
+			}
+			
 
 		case 9:
 			return;
@@ -3303,7 +3371,7 @@ void patientProfileMenu(int PatientID) {
 	Menu PPM;
 	PPM.header = "Patient Profile Update\n\n";
 	PPM.addOption("->> Name");
-	PPM.addOption("->> Mobile Number (000-0000000)");
+	PPM.addOption("->> Mobile Number (010-0000000)");
 	PPM.addOption("->> Toogle To Change Your Gender");
 	PPM.addOption("->> Date of Birth (YYYY-MM-DD)");
 	PPM.addOption("->> Height (cm)");
@@ -3341,7 +3409,7 @@ void patientProfileMenu(int PatientID) {
 			break;
 
 		case 2:
-			cout << "Please enter your mobile number (000-0000000): ";
+			cout << "Please enter your mobile number (010-0000000): ";
 			cin >> temp.PTelephoneNo;
 			if (validateFormat(temp.PTelephoneNo, R"(\d{3}-\d{7})") && temp.PTelephoneNo.substr(0, 2) == "01") {
 				cout << "Valid format." << endl;
@@ -3803,7 +3871,7 @@ void addAppointments(){
 	Menu AAM;
 	AAM.header = "Make Appointment \n\n";
 	AAM.addOption("->> Date (YYYY-MM-DD)");
-	AAM.addOption("->> Time (HH:MM)(24 Hour Format)");
+	AAM.addOption("->> Time (08:00 - 18:00)");
 	AAM.addOption("->> Status");
 	AAM.addOption("->> DoctorID");
 	AAM.addOption("->> PatientID");
@@ -3884,10 +3952,19 @@ void addAppointments(){
 			AAM.setValue(4, to_string(appaam.PatientID));
 			break;
 		case 6:
-			appaam.insertapp(AStatus);
-			cout << "Completed!";
-			_getch();
-			break;
+			if (appaam.ADate.empty() || appaam.ATime.empty() || to_string(appaam.DoctorID).empty() || to_string(appaam.PatientID).empty()) {
+				cout << "Some required details should not be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				appaam.insertapp(AStatus);
+				cout << "Completed!";
+				_getch();
+				break;
+
+			}
+			
 		case 7:
 			return;
 		default:
@@ -3907,7 +3984,7 @@ void updateAppointments(int AppointmentID){
 	Menu UAM;
 	UAM.header = "Edit Appointment Details\n\n";
 	UAM.addOption("->> Date (YYYY-MM-DD)");
-	UAM.addOption("->> Time (HH:MM)(24 Hour Format)");
+	UAM.addOption("->> Time (08:00 - 18:00)");
 	UAM.addOption("->> Status");
 	UAM.addOption("->> DoctorID");
 	UAM.addOption("->> PatientID");
@@ -4213,10 +4290,19 @@ void addFeedback(){
 			break;
 
 		case 6:
-			fafm.insertf();
-			cout << "Completed!";
-			_getch();
-			break;
+			if (to_string(fafm.Ratings).empty() || fafm.FDate.empty() || to_string(fafm.DoctorID).empty() || to_string(fafm.PatientID).empty()) {
+				cout << "Some required details should not be NULl or Space!!";
+				_getch();
+				break;
+			}
+			else {
+				fafm.insertf();
+				cout << "Completed!";
+				_getch();
+				break;
+
+			}
+			
 		case 7:
 			return;
 		default:
@@ -5015,7 +5101,7 @@ bool isValidTime(const string& hours, const string& minutes, const string& secon
 	int secondsInt = stoi(seconds);
 
 	// Basic checks for hours, minutes, and seconds
-	return (hoursInt >= 0 && hoursInt <= 23) &&
+	return (hoursInt >= 8 && hoursInt <= 18) &&
 		(minutesInt >= 0 && minutesInt <= 59) &&
 		(secondsInt >= 0 && secondsInt <= 59);
 }
