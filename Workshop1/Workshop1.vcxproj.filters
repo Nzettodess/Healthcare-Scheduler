@@ -19,34 +19,10 @@
     <Filter Include="Source Files\Done%28UntilFinal%29">
       <UniqueIdentifier>{6f5826ff-395b-460b-bac7-eaf9e1bf817a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\PartiallyDone">
-      <UniqueIdentifier>{ce2d45b5-258c-423a-b368-8a59b8960b85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\PartiallyDone">
-      <UniqueIdentifier>{9ec4cd68-7b2e-4f53-8643-9b57c2ee2791}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseConnector.cpp">
       <Filter>Source Files\Done%28UntilFinal%29</Filter>
-    </ClCompile>
-    <ClCompile Include="Accounts.cpp">
-      <Filter>Source Files\PartiallyDone</Filter>
-    </ClCompile>
-    <ClCompile Include="Appointments.cpp">
-      <Filter>Source Files\PartiallyDone</Filter>
-    </ClCompile>
-    <ClCompile Include="Departments.cpp">
-      <Filter>Source Files\PartiallyDone</Filter>
-    </ClCompile>
-    <ClCompile Include="Feedback.cpp">
-      <Filter>Source Files\PartiallyDone</Filter>
-    </ClCompile>
-    <ClCompile Include="Doctors.cpp">
-      <Filter>Source Files\PartiallyDone</Filter>
-    </ClCompile>
-    <ClCompile Include="Patients.cpp">
-      <Filter>Source Files\PartiallyDone</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
@@ -66,28 +42,28 @@
     <ClCompile Include="Notifications.cpp">
       <Filter>Source Files\Done%28UntilFinal%29</Filter>
     </ClCompile>
+    <ClCompile Include="Accounts.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Appointments.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Departments.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Doctors.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Feedback.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Patients.cpp">
+      <Filter>Source Files\Done%28UntilFinal%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseConnector.h">
       <Filter>Header Files\Done%28UntilFinal%29</Filter>
-    </ClInclude>
-    <ClInclude Include="Accounts.h">
-      <Filter>Header Files\PartiallyDone</Filter>
-    </ClInclude>
-    <ClInclude Include="Appointments.h">
-      <Filter>Header Files\PartiallyDone</Filter>
-    </ClInclude>
-    <ClInclude Include="Departments.h">
-      <Filter>Header Files\PartiallyDone</Filter>
-    </ClInclude>
-    <ClInclude Include="Feedback.h">
-      <Filter>Header Files\PartiallyDone</Filter>
-    </ClInclude>
-    <ClInclude Include="Doctors.h">
-      <Filter>Header Files\PartiallyDone</Filter>
-    </ClInclude>
-    <ClInclude Include="Patients.h">
-      <Filter>Header Files\PartiallyDone</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files\Done%28UntilFinal%29</Filter>
@@ -102,6 +78,24 @@
       <Filter>Header Files\Done%28UntilFinal%29</Filter>
     </ClInclude>
     <ClInclude Include="Toast.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Patients.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Accounts.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Appointments.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Departments.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Doctors.h">
+      <Filter>Header Files\Done%28UntilFinal%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Feedback.h">
       <Filter>Header Files\Done%28UntilFinal%29</Filter>
     </ClInclude>
   </ItemGroup>

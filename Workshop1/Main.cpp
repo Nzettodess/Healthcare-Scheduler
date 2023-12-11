@@ -49,7 +49,7 @@ int tempDepartmentID = -1;
 void listDepartments();
 
 //Login
-void loginAccount();
+void loginAccount(int Role);
 
 //Home
 void homePatient(Accounts user, Patients p);
@@ -324,7 +324,7 @@ void registerPatientProfile(int AccountID) {
 				cout << "\nNow inserting and press any key to redirecte you to login...";
 				_getch();
 				profilep.insertp();
-				loginAccount();
+				loginAccount(2);
 				break;
 
 			}
@@ -400,7 +400,7 @@ void registerDoctorProfile(int AccountID) {
 				cout << "\nNow inserting and press any key to redirecte you to login...";
 				_getch();
 				profiled.insertd();
-				loginAccount();
+				loginAccount(1);
 				break;
 
 			}
@@ -506,14 +506,23 @@ void listDepartments() {
 		}
 	};
 }
-void loginAccount() {
-
+void loginAccount(int Role) {
+	string Roles = "";
+	if (Role == 0) {
+		 Roles = " For Admin";
+	}
+	else if (Role == 1) {
+		Roles = " For Doctor";
+	}
+	else {
+		Roles = " For Patient";
+	}
 	Appointments appdata;
 	Accounts acclogin;
 	Patients  pdata;
 	Doctors ddata;
 	Menu LM;
-	LM.header = "Login\n";
+	LM.header = "Login" + Roles + "\n";
 	LM.addOption("->> Username");
 	LM.addOption("->> Password");
 	LM.addOption("->> Login");
@@ -575,6 +584,7 @@ void loginAccount() {
 		}
 	}
 }
+
 
 // HomeMenuPatients 
 void homePatient(Accounts a, Patients p) {
@@ -5124,13 +5134,13 @@ void mainMenu() {
 			break;
 
 		case 2:
-			loginAccount();
+			loginAccount(2);
 			break;
 		case 3:
-			loginAccount();
+			loginAccount(1);
 			break;
 		case 4:
-			loginAccount();
+			loginAccount(0);
 			break;
 
 		case 5:
