@@ -43,9 +43,9 @@ public:
 	void getappdatap(int PatientID);
 
 	//Return appointment data //For user dynamic query
-	static vector<Appointments> getapplistp(int PatientID, string sortColumn, bool ascending);
+	static vector<Appointments> getapplistp(int PatientID, string sortColumn, bool ascending, bool isAll);
 
-	static vector<Appointments> getapplistd(int PatientID, string sortColumn, bool ascending);
+	static vector<Appointments> getapplistd(int PatientID, string sortColumn, bool ascending, bool isAll);
 
 	static vector<Appointments> getappdatapd(int PatientID, int DoctorID);
 

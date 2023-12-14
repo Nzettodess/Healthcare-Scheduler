@@ -105,9 +105,20 @@ void Appointments::getappdatap(int PatientID) {
 }
 
 //Return appointment data //For user dynamic query
-vector<Appointments> Appointments::getapplistp(int PatientID, string sortColumn, bool ascending) {
+vector<Appointments> Appointments::getapplistp(int PatientID, string sortColumn, bool ascending, bool isAll) {
 
-	string query = "SELECT * FROM `Appointments` WHERE PatientID  =  ? " " ORDER BY " + sortColumn;
+	string query;
+
+	if (isAll) {
+		
+		query = "SELECT * FROM `Appointments` WHERE PatientID  =  ? " " ORDER BY " + sortColumn;
+	}
+	else {
+		query = "SELECT * FROM Appointments WHERE PatientID = ? "
+			" AND (ADate > CURDATE() OR (ADate = CURDATE() AND ATime >= CURTIME())) "
+			" ORDER BY " + sortColumn;
+	}
+	
 
 	if (ascending) {
 		query += " ASC";
@@ -142,9 +153,19 @@ vector<Appointments> Appointments::getapplistp(int PatientID, string sortColumn,
 }
 
 //Return appointment data //For user dynamic query
-vector<Appointments> Appointments::getapplistd(int DoctorID, string sortColumn, bool ascending) {
+vector<Appointments> Appointments::getapplistd(int DoctorID, string sortColumn, bool ascending, bool isAll) {
 
-	string query = "SELECT * FROM `Appointments` WHERE DoctorID  =  ? " " ORDER BY " + sortColumn;
+	string query;
+
+	if (isAll) {
+		query = "SELECT * FROM `Appointments` WHERE DoctorID  =  ? " " ORDER BY " + sortColumn;
+	}
+	else {
+		query = "SELECT * FROM Appointments WHERE DoctorID = ? "
+			" AND (ADate > CURDATE() OR (ADate = CURDATE() AND ATime >= CURTIME())) "
+			" ORDER BY " + sortColumn;
+	}	
+
 
 	if (ascending) {
 		query += " ASC";

@@ -915,15 +915,17 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 	vector<Appointments> Appointments;
 	string displayString = "", sortColumn = "AppointmentID";
 	bool ascending = true;
+		bool isAll = true;
 
 	//Show the list at first encounter
-	Appointments = Appointments::getapplistp(p.PatientID, sortColumn, ascending);
+	Appointments = Appointments::getapplistp(p.PatientID, sortColumn, ascending, isAll);
 	bool foundAppointment;
 	//AppointmentMenu
 	Menu AM;
 	AM.header = "Appointment\n\n";
 	AM.addOption("->> Sort by");
 	AM.addOption("->> Order by");
+	AM.addOption("->> Toogle");
 	AM.addOption("->> Search/Refresh");
 	AM.addOption("->> Make Appointment");
 	AM.addOption("->> Update Appointment");
@@ -947,6 +949,12 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 		}
 		else {
 			AM.setValue(1, "Descending");
+		}
+		if (isAll) {
+			AM.setValue(2, "Show All Appointments");
+		}
+		else {
+			AM.setValue(2, "Show Future Appointments");
 		}
 		if (displayString == "") {
 			displayString = "\nSearch Result: \n\n";
@@ -991,15 +999,19 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 			break;
 
 		case 3:
-			Appointments = Appointments::getapplistp(p.PatientID, sortColumn, ascending);
-			displayString = "";
+			isAll = !isAll;
 			break;
 
 		case 4:
-			addAppointmentMenu(a, p);
+			Appointments = Appointments::getapplistp(p.PatientID, sortColumn, ascending, isAll);
+			displayString = "";
 			break;
 
 		case 5:
+			addAppointmentMenu(a, p);
+			break;
+
+		case 6:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be updated: ";
 			cin >> appam.AppointmentID;
 			
@@ -1029,7 +1041,7 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 			}
 			break;
 
-		case 6:
+		case 7:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be cancel: ";
 			cin >> appam.AppointmentID;
 			foundAppointment = false;
@@ -1067,7 +1079,7 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 			
 			break;
 
-		case 7:
+		case 8:
 			return;
 			break;
 		default:
@@ -1959,15 +1971,17 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 	vector<Appointments> Appointments;
 	string displayString = "", sortColumn = "AppointmentID", updateStatus = "";
 	bool ascending = true;
+		bool isAll = true;
 
 	//Show the list at first encounter
-	Appointments = Appointments::getapplistd(d.DoctorID, sortColumn, ascending);
+	Appointments = Appointments::getapplistd(d.DoctorID, sortColumn, ascending, isAll);
 	bool foundAppointment;
 	//AppointmentMenu
 	Menu AM;
 	AM.header = "Appointment\n\n";
 	AM.addOption("->> Sort by");
 	AM.addOption("->> Order by");
+	AM.addOption("->> Toogle");
 	AM.addOption("->> Search/Refresh");
 	AM.addOption("->> Make Appointment");
 	AM.addOption("->> Update Appointment");
@@ -2000,6 +2014,14 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 		else {
 			AM.setValue(1, "Descending");
 		}
+
+		if (isAll) {
+			AM.setValue(2, "Show All Appointments");
+		}
+		else {
+			AM.setValue(2, "Show Future Appointments");
+		}
+
 		if (displayString == "") {
 			displayString = "\nSearch Result: \n\n";
 			stringstream tmpString;
@@ -2043,11 +2065,15 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 			break;
 
 		case 3:
-			Appointments = Appointments::getapplistd(d.DoctorID, sortColumn, ascending);
-			displayString = "";
+			isAll = !isAll;
 			break;
 
 		case 4:
+			Appointments = Appointments::getapplistd(d.DoctorID, sortColumn, ascending, isAll);
+			displayString = "";
+			break;
+
+		case 5:
 			cout << "Enter the PatientID to make an follow up appointment: ";
 			cin >> appam.PatientID;
 			
@@ -2067,7 +2093,7 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 			}
 			break;
 
-		case 5:
+		case 6:
 			cout << "Enter the AppointmentID to choose the appointment that needs to be updated: ";
 			cin >> appam.AppointmentID;
 			foundAppointment = false;
@@ -2125,7 +2151,7 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 			}
 			break;
 
-		case 6:
+		case 7:
 			cout << "Enter the PatientID to Update Their Profile Details: ";
 			cin >> appam.PatientID;
 			
@@ -2144,7 +2170,7 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 			}
 			break;
 
-		case 7:
+		case 8:
 			return;
 			break;
 		default:
