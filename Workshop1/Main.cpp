@@ -1077,7 +1077,6 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 			break;
 			
 			
-			break;
 
 		case 8:
 			return;
