@@ -22,6 +22,7 @@ using namespace std;
 class Appointments
 {
 public:
+	//Data
 	int AppointmentID, PatientID, DoctorID;
 	string ADate, ATime,  AStatus;
 
@@ -51,13 +52,19 @@ public:
 
 	static vector<Appointments> getapplistall(string sortColumn, bool ascending);
 
+	//Remove appointment
 	static void removeApps(int AppointmentID);
 
+	//Return total number of appointments
 	static int gettotal();
 
+	//Return total number of appointments today
 	static int getTodayTotal();
+	//Return total number of appointments tomorrow
 	static int getTmrTotal();
+	//Return total number of appointments last 2 week
 	static int getLast2wkTotal();
+	//Return total number of appointments next 2 week
 	static int getNext2wkTotal();
 };
 #endif
@@ -71,4 +78,8 @@ public:
 
 //Return appointment data(PatientID) //For machine read data
 //void getappdatap(int PatientID);
+//Update appointment (change status to pending )
+//void updateappsp();
 
+//Return appointment data(PatientID) //For machine read data
+//void getappdatap(int PatientID);

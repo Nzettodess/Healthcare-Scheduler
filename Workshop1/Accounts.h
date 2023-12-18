@@ -23,6 +23,7 @@ using namespace std;
 class Accounts
 {
 public:
+	//Accounts's properties
 	int ARole, AccountID;
 	string Username, Password;
 
@@ -46,11 +47,15 @@ public:
 	//Check Username Existence
 	bool usernameExisted(string Username); 
 
+	//Get account list
 	static vector<Accounts> getalist(string keyWord, string sortColumn, bool ascending);
 
+	//Remove account
 	static void removeAccount(int AccountID);
 
+	//Get total account
 	static int getTotalAccount();
+	//Get total account by role
 	static int getTotalRole(int ARole);
 };
 #endif

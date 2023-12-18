@@ -99,7 +99,6 @@ void addFeedback();
 void updateFeedback(int FeedbackID);
 void statistics();
 
-
 void doctorList();
 int doctorSelected = -1;
 void patientList();
@@ -5034,10 +5033,12 @@ void statistics() {
 		switch (MM.prompt())
 		{
 		case 1:
+			// set the values of the totalAcc, totalaAdmin, totalaDoctor, totalaPatient
 			AM.setValue(0, to_string(totalAcc));
 			AM.setValue(1, to_string(totalaAdmin));
 			AM.setValue(2, to_string(totalaDoctor));
 			AM.setValue(3, to_string(totalaPatient));
+			// get the value of the user
 			switch (AM.prompt()) {
 			case 1:
 				break;
@@ -5047,9 +5048,11 @@ void statistics() {
 			break;
 
 		case 2:
+			// set the values of the totalDoctor, bestDoctor, worstDoctor
 			DM.setValue(0, to_string(totalDoctor));
 			DM.setValue(1, bestDoctor);
 			DM.setValue(2, worstDoctor);
+			// get the value of the user
 			switch (DM.prompt()) {
 			case 1:
 				break;
@@ -5058,6 +5061,7 @@ void statistics() {
 			}
 			break;
 		case 3:
+			// set the values of the totalPatient, ageGroup1, ageGroup2, ageGroup3, ageGroup4, BMIGroup1, BMIGroup2, BMIGroup3, BMIGroup4
 			PM.setValue(0, to_string(totalPatient));
 			PM.setValue(1, to_string(ageGroup1));
 			PM.setValue(2, to_string(ageGroup2));
@@ -5067,6 +5071,7 @@ void statistics() {
 			PM.setValue(6, to_string(BMIGroup2));
 			PM.setValue(7, to_string(BMIGroup3));
 			PM.setValue(8, to_string(BMIGroup4));
+			// get the value of the user
 			switch (PM.prompt()) {
 			case 1:
 				break;
@@ -5075,6 +5080,7 @@ void statistics() {
 			}
 			break;
 		case 4:
+			// set the values of the totalDepartment, td1, td2, td3, td4, td5, td6, td7, td8, td9, td10
 			DPTM.setValue(0, to_string(totalDepartment));
 			DPTM.setValue(1, to_string(td1));
 			DPTM.setValue(2, to_string(td2));
@@ -5086,6 +5092,7 @@ void statistics() {
 			DPTM.setValue(8, to_string(td8));
 			DPTM.setValue(9, to_string(td9));
 			DPTM.setValue(10, to_string(td10));
+			// get the value of the user
 			switch (DPTM.prompt()) {
 			case 1:
 				break;
@@ -5095,11 +5102,13 @@ void statistics() {
 			break;
 
 		case 5:
+			// set the values of the totalAppointment, tmrtotalAPP, todaytotalAPP, last2wkAPP, next2wkAPP
 			APPM.setValue(0, to_string(totalAppointment));
 			APPM.setValue(1, to_string(todaytotalAPP));
 			APPM.setValue(2, to_string(tmrtotalAPP));
 			APPM.setValue(3, to_string(last2wkAPP));
 			APPM.setValue(4, to_string(next2wkAPP));
+			// get the value of the user
 			switch (APPM.prompt()) {
 			case 1:
 				break;
@@ -5108,6 +5117,7 @@ void statistics() {
 			}
 			break;
 		case 6:
+			// set the values of the totalFeedback, todaytotalF, last2wkF, bestRatings, bestDoctor, worstRatings, worstDoctor
 			FM.setValue(0, to_string(totalFeedback));
 			FM.setValue(1, to_string(todaytotalF));
 			FM.setValue(2, to_string(last2wkF));
@@ -5115,6 +5125,7 @@ void statistics() {
 			FM.setValue(4, bestDoctor);
 			FM.setValue(5, worstRatings.str());
 			FM.setValue(6, worstDoctor);
+			// get the value of the user
 			switch (FM.prompt()) {
 			case 1:
 				break;
@@ -5123,6 +5134,7 @@ void statistics() {
 			}
 			break;
 		case 7:
+			// return to the main menu
 			return;
 			break;
 		default:
