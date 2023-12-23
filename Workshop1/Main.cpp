@@ -663,6 +663,7 @@ void patientNotificationChecker(Accounts a, Patients p) {
 	Doctors dpnc;
 	Notifications npnc;
 	vector<Appointments> Appointments;
+	vector<Notifications> Notifications;
 
 	p.getpdatap(a.AccountID);
 	//apppnc.getappdatap(ppnc.PatientID);
@@ -671,21 +672,27 @@ void patientNotificationChecker(Accounts a, Patients p) {
 	Appointments = Appointments::getappdatapd(p.PatientID, -1);
 
 	for (int i = 0; i < Appointments.size(); i++) {
-		//To get minutesDifference
-		string scheduledDateTimeStr = Appointments[i].ADate + " " + Appointments[i].ATime;
-		tm scheduledDateTimeStruct = {};
-		istringstream scheduledSS(scheduledDateTimeStr);
-		scheduledSS >> get_time(&scheduledDateTimeStruct, "%Y-%m-%d %H:%M:%S");
-		auto scheduledTime = chrono::system_clock::from_time_t(mktime(&scheduledDateTimeStruct));
 
-		auto timeDifference = scheduledTime - chrono::system_clock::from_time_t(now);
-		auto minutesDifference = chrono::duration_cast<chrono::minutes>(timeDifference).count();
+		Notifications = npnc.getNdataApp(Appointments[i].AppointmentID);
 
-		dpnc.getddatad(Appointments[i].DoctorID);
-		npnc.getndataapp(Appointments[i].AppointmentID);
+		for (int j = 0; j < Notifications.size(); j++) {
+			//To get minutesDifference
+			string scheduledDateTimeStr = Appointments[i].ADate + " " + Appointments[i].ATime;
+			tm scheduledDateTimeStruct = {};
+			istringstream scheduledSS(scheduledDateTimeStr);
+			scheduledSS >> get_time(&scheduledDateTimeStruct, "%Y-%m-%d %H:%M:%S");
+			auto scheduledTime = chrono::system_clock::from_time_t(mktime(&scheduledDateTimeStruct));
 
-		//After having every parameter call for condition checker, if fulfill send notification
-		Notifications::conditioncheckerp(minutesDifference, Appointments[i].AStatus, npnc.NStatus, npnc.Reason, Appointments[i].ADate, Appointments[i].ATime, Appointments[i].DoctorID, dpnc.DName, npnc.NotificationID, Appointments[i].AppointmentID, npnc.AppointmentID);
+			auto timeDifference = scheduledTime - chrono::system_clock::from_time_t(now);
+			auto minutesDifference = chrono::duration_cast<chrono::minutes>(timeDifference).count();
+
+			dpnc.getddatad(Appointments[i].DoctorID);
+			//npnc.getndataapp(Appointments[i].AppointmentID);
+
+			//After having every parameter call for condition checker, if fulfill send notification
+			Notifications::conditioncheckerp(minutesDifference, Appointments[i].AStatus, Notifications[j].NStatus, Notifications[j].Reason, Appointments[i].ADate, Appointments[i].ATime, Appointments[i].DoctorID, dpnc.DName, Notifications[j].NotificationID, Appointments[i].AppointmentID, Notifications[j].AppointmentID);
+		}
+		
 		
 	}
 }
@@ -1788,6 +1795,7 @@ void doctorNotificationChecker(Accounts a, Doctors d) {
 	Patients pdnc;
 	Notifications ndnc;
 	vector<Appointments> Appointments;
+	vector<Notifications> Notifications;
 
 	d.getddataa(a.AccountID);
 
@@ -1796,6 +1804,10 @@ void doctorNotificationChecker(Accounts a, Doctors d) {
 	Appointments = Appointments::getappdatapd(d.DoctorID, -1);
 
 	for (int i = 0; i < Appointments.size(); i++) {
+
+		Notifications = ndnc.getNdataApp(Appointments[i].AppointmentID);
+
+		for (int j = 0; j < Notifications.size(); j++) {
 		//To get minutesDifference
 		string scheduledDateTimeStr = Appointments[i].ADate + " " + Appointments[i].ATime;
 		tm scheduledDateTimeStruct = {};
@@ -1808,10 +1820,11 @@ void doctorNotificationChecker(Accounts a, Doctors d) {
 
 		//To get extra data for notification
 		pdnc.getpdatap(Appointments[i].PatientID);
-		ndnc.getndataapp(Appointments[i].AppointmentID);
+		//ndnc.getndataapp(Appointments[i].AppointmentID);
 
 		//After having every parameter call for condition checker, if fulfill send notification
-		Notifications::conditioncheckerd(minutesDifference, Appointments[i].AStatus, ndnc.NStatus, ndnc.Reason, Appointments[i].ADate, Appointments[i].ATime, Appointments[i].PatientID, pdnc.PName, ndnc.NotificationID, Appointments[i].AppointmentID);
+		Notifications::conditioncheckerd(minutesDifference, Appointments[i].AStatus, Notifications[j].NStatus, Notifications[j].Reason, Appointments[i].ADate, Appointments[i].ATime, Appointments[i].PatientID, pdnc.PName, Notifications[j].NotificationID, Appointments[i].AppointmentID);
+	}
 	}
 }
 Doctors doctorProfileMenu(Accounts a, Doctors d) {

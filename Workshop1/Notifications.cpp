@@ -54,7 +54,6 @@ void Notifications::conditioncheckerp(chrono::minutes::rep minutesDifference, st
 	if ((minutesDifference > 0 && minutesDifference <= 60) && AStatus == "Succeeded" && NStatus == "Yet" && Reason == "TimeP") {
 
 		string messaget1 = "Your appointment is in less than an hour!";
-
 		string messaget2 =	"The Appointment details: \n"
 							"Date: " + ADate + "\n" +
 							"Time: " + ATime + "\n" +
@@ -65,15 +64,10 @@ void Notifications::conditioncheckerp(chrono::minutes::rep minutesDifference, st
 		wstring wMessaget2 = Toast::stringToWstring(messaget2);
 		Toast::toastingmsg(wMessaget1,wMessaget2);
 
-		Notifications::updatens("Done", NotificationID);
-		
-//Dumped
-		//Notifications::sendtimemsgp(ADate, ATime, DoctorID, DName);
+		Notifications::updatens("Done", NotificationID);	
 	}
-
 	if ((AStatus == "Succeeded" || AStatus == "Failed") && NStatus == "Yet" && Reason == "ToPatient") {
 		string messages1 = "There has been an update regarding your appointment!";
-
 		string messages2 = 	"Date: " + ADate + "\n" +
 							"Time: " + ATime + "\n" +
 							"Status: " + AStatus + "\n" +
@@ -85,9 +79,6 @@ void Notifications::conditioncheckerp(chrono::minutes::rep minutesDifference, st
 		Toast::toastingmsg(wMessages1, wMessages2);
 
 		Notifications::updatens("Done", NotificationID);
-
-//Dumped
-//Notifications::sendstatusmsgp(AppointmentID, ADate, ATime, AStatus, DoctorID, DName);
 	}
 }
 
@@ -98,8 +89,7 @@ void Notifications::conditioncheckerd(chrono::minutes::rep minutesDifference, st
 	if ((minutesDifference > 0 && minutesDifference <= 60) && AStatus == "Succeeded" && NStatus == "Yet" && Reason == "TimeD") {
 
 		string messaget1 = "Your appointment is in less than an hour!";
-
-		string messaget2 = "The Appointment details: \n"
+				string messaget2 = "The Appointment details: \n"
 			"Date: " + ADate + "\n" +
 			"Time: " + ATime + "\n" +
 			"Patient's Name: " + PName + "\n"
@@ -110,14 +100,10 @@ void Notifications::conditioncheckerd(chrono::minutes::rep minutesDifference, st
 		Toast::toastingmsg(wMessaget1, wMessaget2);
 
 		Notifications::updatens("Done", NotificationID);
-
-
-	}
-
+		}
 	if ((AStatus == "Pending" || AStatus == "Canceled") && NStatus == "Yet" && Reason == "ToDoctor") {
 		string messages1 = "There has been an update regarding your appointment!";
-
-		string messages2 = "Date: " + ADate + "\n" +
+				string messages2 = "Date: " + ADate + "\n" +
 							"Time: " + ATime + "\n" +
 							"Status: " + AStatus + "\n" +
 							"Patient's Name: " + PName + "\n"
@@ -131,6 +117,32 @@ void Notifications::conditioncheckerd(chrono::minutes::rep minutesDifference, st
 	}
 }
 
+vector<Notifications> Notifications::getNdataApp(int AppointmentID) {
+
+	string query = "SELECT * FROM `Notifications` WHERE AppointmentID  =  ?";
+
+	DatabaseConnector db;
+	db.prepareStatement(query);
+	db.stmt->setInt(1, AppointmentID);
+
+	vector<Notifications> Notificationsl;
+
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+
+		while (db.res->next()) {
+			Notifications tempNotifications(db.res);
+			Notificationsl.push_back(tempNotifications);
+		}
+	}
+	if (db.res->rowsCount() <= 0) {
+		cout << "Empty!";
+		_getch();
+	}
+	db.~DatabaseConnector();
+	return Notificationsl;
+}
 //send notication because time is close //Dumped
 //void Notifications::sendtimemsgp(string ADate, string ATime, int DoctorID, string DName) {
 //

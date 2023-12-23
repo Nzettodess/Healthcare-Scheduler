@@ -44,5 +44,7 @@ public:
 
 	//For Doctors
 	static void conditioncheckerd(chrono::minutes::rep minutesDifference, string AStatus, string NStatus, string Reason, string ADate, string ATime, int PatientID, string PName, int NotificationID, int AppointmentID);
+
+	static vector<Notifications> getNdataApp(int AppointmentID);
 };
 #endif
