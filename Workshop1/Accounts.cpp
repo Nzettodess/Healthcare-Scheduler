@@ -2,6 +2,7 @@
 #include "DatabaseConnector.h"
 #include <iostream>
 #include <mysql/jdbc.h>
+//#include <matplot/matplot.h>
 
 //Constructor
 Accounts::Accounts() {
@@ -307,4 +308,44 @@ int Accounts::getTotalRole(int ARole) {
 	int test;
 	test = Accounts::getTotalAccount();
 	cout << test;*/
+}
+
+std::vector<int> Accounts::getTotalRoleCounts() {
+	DatabaseConnector db;
+
+	// Assuming you have a list of roles (modify this based on your actual roles)
+	std::vector<int> roles = { 1, 2, 3, 4 };  // Replace with your role values
+
+	std::vector<int> roleCounts;
+
+	for (int role : roles) {
+		int totalAcc = -1;
+
+		// Prepare statement to select total number of accounts for each role
+		db.prepareStatement("SELECT COUNT(AccountID) AS totalacc FROM Accounts WHERE ARole = ?");
+
+		// Set the parameter to the current role value
+		db.stmt->setInt(1, role);
+
+		// Execute the query
+		db.QueryResult();
+
+		// Check if the query was successful
+		if (db.res->rowsCount() > 0) {
+			// If the query was successful, loop through the results
+			while (db.res->next()) {
+				// Set the totalAcc variable to the value of the totalacc column
+				totalAcc = db.res->getInt("totalacc");
+			}
+		}
+
+		// Add the total count for the current role to the vector
+		roleCounts.push_back(totalAcc);
+	}
+
+	// Destroy the DatabaseConnector object
+	db.~DatabaseConnector();
+
+	// Return the vector containing total counts for each role
+	return roleCounts;
 }

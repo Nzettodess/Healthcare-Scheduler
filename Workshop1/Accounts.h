@@ -57,5 +57,7 @@ public:
 	static int getTotalAccount();
 	//Get total account by role
 	static int getTotalRole(int ARole);
+
+	static std::vector<int> getTotalRoleCounts();
 };
 #endif
