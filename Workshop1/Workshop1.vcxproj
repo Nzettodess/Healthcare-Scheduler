@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Nzettodess\Downloads\mysql-connector-c++-8.0.30-winx64\mysql-connector-c++-8.0.30-winx64\include;C:\Users\Nzettodess\OneDrive - Universiti Teknikal Malaysia Melaka\Documents\Workshop1\Workshop1\Workshop1;C:\Users\Nzettodess\OneDrive - Universiti Teknikal Malaysia Melaka\Documents\Workshop1\Matplot++ 1.2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Nzettodess\Downloads\mysql-connector-c++-8.0.30-winx64\mysql-connector-c++-8.0.30-winx64\include;C:\Users\Nzettodess\OneDrive - Universiti Teknikal Malaysia Melaka\Documents\Workshop1\Workshop1\Workshop1;C:\Users\Nzettodess\OneDrive - Universiti Teknikal Malaysia Melaka\Documents\Workshop1\Matplot++ 1.2.0\include;C:\Users\Nzettodess\OneDrive - Universiti Teknikal Malaysia Melaka\Documents\Workshop1\implot-0.16;C:\Users\Nzettodess\Downloads\imgui-1.90\imgui-1.90;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAsWinRT>false</CompileAsWinRT>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
@@ -136,6 +136,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\implot-0.16\implot.cpp" />
+    <ClCompile Include="..\..\implot-0.16\implot_items.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Nzettodess\Downloads\imgui-1.90\imgui-1.90;C:\Users\Nzettodess\Downloads\imgui-1.90\imgui-1.90\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
     <ClCompile Include="Accounts.cpp" />
     <ClCompile Include="Appointments.cpp" />
     <ClCompile Include="DatabaseConnector.cpp" />
@@ -155,6 +159,8 @@
     <ClCompile Include="wintoastlib.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\implot-0.16\implot.h" />
+    <ClInclude Include="..\..\implot-0.16\implot_internal.h" />
     <ClInclude Include="Accounts.h" />
     <ClInclude Include="Appointments.h" />
     <ClInclude Include="DatabaseConnector.h" />

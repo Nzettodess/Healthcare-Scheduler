@@ -1,4 +1,5 @@
 #include "Toast.h"
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 using namespace WinToastLib;
 
 class WinToastHandler : public IWinToastHandler {

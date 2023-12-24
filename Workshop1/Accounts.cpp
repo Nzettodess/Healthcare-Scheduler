@@ -2,7 +2,7 @@
 #include "DatabaseConnector.h"
 #include <iostream>
 #include <mysql/jdbc.h>
-//#include <matplot/matplot.h>
+
 
 //Constructor
 Accounts::Accounts() {

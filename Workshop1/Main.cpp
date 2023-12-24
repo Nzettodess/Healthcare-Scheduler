@@ -15,7 +15,9 @@
 #include <stdlib.h> 
 #include <thread>
 #include <time.h>
-#include <matplot/matplot.h>
+#include "implot.h"
+#include "implot_internal.h"
+#include <numeric>
 #include <windows.h>
 
 //project header
@@ -31,11 +33,14 @@
 #include "Timer.h"
 #include "Toast.h"
 #include "wintoastlib.h"
+#include "imgui.h"
+#include "backends/imgui_impl_win32.h"
+#include "backends/imgui_impl_dx11.h"
 
 using namespace WinToastLib;
 using namespace std;
 using namespace sql;
-using namespace matplot;
+
 
 //Function Declaration
 
@@ -5163,32 +5168,12 @@ void statistics() {
 int main() {
 	//system("Color A");
 
-	/*while (1) {
+	while (1) {
 		mainMenu();
-	}*/
-
-	// Call the method to get total counts for each role
-	std::vector<int> roleCounts = Accounts::getTotalRoleCounts();
-
-	// Display the results
-	for (size_t i = 0; i < roleCounts.size(); ++i) {
-		std::cout << "Role " << i + 1 << ": " << roleCounts[i] << std::endl;
 	}
 
-	// Plot the result using Matplotplusplus
-	using namespace matplot;
 
-	// Generate x values (role indices) and y values (total counts)
-	std::vector<double> x(roleCounts.size());
-	std::iota(x.begin(), x.end(), 1);  // 1, 2, 3, ..., n
 
-	std::vector<double> y(roleCounts.begin(), roleCounts.end());
-
-	bar(x, y);  // Plot a bar chart
-
-	show();
-
-	return 0;
 }
 void mainMenu() {
 	//Main menu
