@@ -1,0 +1,10 @@
+insert into Departments (DepartmentID, DptName, Description) values (1, 'Cardiology', 'pede ac diam cras pellentesque volutpat');
+insert into Departments (DepartmentID, DptName, Description) values (2, 'Orthopedics', 'nec molestie sed');
+insert into Departments (DepartmentID, DptName, Description) values (3, 'Neurology', 'sit amet consectetuer adipiscing');
+insert into Departments (DepartmentID, DptName, Description) values (4, 'Pediatrics', 'pede justo eu massa donec');
+insert into Departments (DepartmentID, DptName, Description) values (5, 'Oncology', 'integer ac neque');
+insert into Departments (DepartmentID, DptName, Description) values (6, 'Gastroenterology', 'elit sodales scelerisque mauris sit');
+insert into Departments (DepartmentID, DptName, Description) values (7, 'Dermatology', 'lobortis ligula sit');
+insert into Departments (DepartmentID, DptName, Description) values (8, 'Radiology', 'sollicitudin vitae consectetuer eget rutrum');
+insert into Departments (DepartmentID, DptName, Description) values (9, 'Anesthesiology', 'ut massa quis augue luctus');
+insert into Departments (DepartmentID, DptName, Description) values (10, 'Urology', 'lectus vestibulum quam');

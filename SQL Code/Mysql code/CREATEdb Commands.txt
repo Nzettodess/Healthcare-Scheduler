@@ -1,0 +1,83 @@
+CREATE TABLE Patients (
+  PatientID INT PRIMARY KEY AUTO_INCREMENT,
+  PName VARCHAR (50) NOT NULL,
+  PTelephoneNo CHAR (12) NOT NULL UNIQUE,
+  Gender VARCHAR (10) NOT NULL,
+  DateOfBirth DATE NOT NULL,
+  Height DOUBLE,
+  Weight DOUBLE,
+  AccountID INT NOT NULL, 
+
+FOREIGN KEY (AccountID) REFERENCES ACCOUNTS (AccountID) ON DELETE CASCADE
+);
+
+CREATE TABLE Appointments (
+  AppointmentID INT PRIMARY KEY AUTO_INCREMENT,
+  ADate DATE NOT NULL,
+  ATime TIME NOT NULL,
+  AStatus VARCHAR (10) NOT NULL,
+  PatientID INT NOT NULL,
+  DoctorID INT NOT NULL,
+
+
+FOREIGN KEY (PatientID) REFERENCES PATIENTS (PatientID) ON DELETE CASCADE,
+FOREIGN KEY (DoctorID) REFERENCES DOCTORS (DoctorID) ON DELETE CASCADE
+);
+
+CREATE TABLE Feedback (
+  FeedbackID INT PRIMARY KEY AUTO_INCREMENT,
+  Ratings INT NOT NULL,
+  Comments VARCHAR (1000),
+  FDate DATE NOT NULL,
+  PatientID INT NOT NULL,
+  DoctorID INT NOT NULL,
+
+FOREIGN KEY (PatientID) REFERENCES PATIENTS (PatientID) ON DELETE CASCADE,
+FOREIGN KEY (DoctorID) REFERENCES DOCTORS (DoctorID) ON DELETE CASCADE
+);
+
+CREATE TABLE Doctors (
+  DoctorID INT PRIMARY KEY AUTO_INCREMENT,
+  DName VARCHAR (50) NOT NULL,
+  DTelephoneNo CHAR (12) NOT NULL UNIQUE,
+  Specialization VARCHAR (50) NOT NULL,
+  DepartmentID INT NOT NULL,
+  AccountID INT NOT NULL, 
+
+FOREIGN KEY (DepartmentID) REFERENCES DEPARTMENTS (DepartmentID) ON DELETE CASCADE,
+FOREIGN KEY (AccountID) REFERENCES ACCOUNTS (AccountID) ON DELETE CASCADE
+);
+
+CREATE TABLE Departments (
+  DepartmentID INT PRIMARY KEY AUTO_INCREMENT,
+  DptName VARCHAR (50) NOT NULL,
+  Description VARCHAR (150)
+  
+);
+
+CREATE TABLE Accounts (
+  AccountID INT PRIMARY KEY AUTO_INCREMENT,
+  Username VARCHAR (50) NOT NULL UNIQUE,
+  Password VARCHAR (50) NOT NULL,
+  ARole INT NOT NULL
+
+);
+
+
+CREATE TABLE Notifications (
+  NotificationID INT PRIMARY KEY AUTO_INCREMENT,
+  Reason VARCHAR (50) NOT NULL,
+  NStatus VARCHAR (50) NOT NULL,
+  AppointmentID INT NOT NULL,
+FOREIGN KEY (AppointmentID) REFERENCES Appointments (AppointmentID) ON DELETE CASCADE
+);
+
+
+Cardiology, Orthopedics, Neurology, Pediatrics, Oncology, Gastroenterology, Dermatology, Radiology, Anesthesiology, Urology
+
+51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100
+
+Pending, Canceled, Failed, Succeeded
+
+TimeP, TimeD, ToDoctor, ToPatient
+Yet, Done

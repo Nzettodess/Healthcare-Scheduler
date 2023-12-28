@@ -1,0 +1,28 @@
+help me extract the content like 
+(
+RM1.header = "Account Registration\n\n";
+RM1.addOption("->> Username (for Login)");
+RM1.addOption("->> Password (for Login)");
+RM1.addOption("->> Toggle to Change Your Role");
+RM1.setValue(2, "Patient");
+RM1.addOption("->> Register Account");
+RM1.addOption("->> Back");
+RM1.footer = "\nEnter the data required accordingly.";
+)
+into
+(
+For the function registerAccount:
+Account Registration
+
+
+1->> Username (for Login)
+2->> Password (for Login)
+3->> Toggle to Change Your Role : Patient
+4->> Register Account
+5->> Back
+
+Enter the data required accordingly.
+) for all the function i provided
+
+let the \n take place as well
+please Strictly follow my format 

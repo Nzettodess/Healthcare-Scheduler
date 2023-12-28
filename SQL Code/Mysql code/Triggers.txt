@@ -1,0 +1,77 @@
+Check AStatus (Notify to Patients if doctor decided on their appointments)
+DELIMITER //
+CREATE TRIGGER AStatus_to_Succeeded_Failed
+AFTER UPDATE ON Appointments
+FOR EACH ROW
+BEGIN
+    IF NEW.AStatus <> OLD.AStatus THEN
+        -- Check if the AStatus is "Succeeded" or "Failed"
+        IF NEW.AStatus IN ('Succeeded', 'Failed') THEN
+            -- Insert a notification into the Notifications table
+            INSERT INTO Notifications (Reason, NStatus, AppointmentID)
+            VALUES (CONCAT('ToPatient'),
+                    'Yet',
+                    NEW.AppointmentID);
+        END IF;
+    END IF;
+END
+//
+DELIMITER ;
+
+
+AStatus (Use to notify to Patients before an hour)
+DELIMITER //
+CREATE TRIGGER AStatus_to_Succeeded_Patients
+AFTER UPDATE ON Appointments
+FOR EACH ROW
+BEGIN
+    IF NEW.AStatus <> OLD.AStatus THEN
+        IF NEW.AStatus IN ('Succeeded') THEN
+            -- Insert a notification into the Notifications table
+            INSERT INTO Notifications (Reason, NStatus, AppointmentID)
+            VALUES (CONCAT('TimeP'),
+                    'Yet',
+                    NEW.AppointmentID);
+        END IF;
+    END IF;
+END
+//
+DELIMITER ;
+
+AStatus (Use to notify to Doctors before an hour)
+DELIMITER //
+CREATE TRIGGER AStatus_to_Succeeded_Doctors
+AFTER UPDATE ON Appointments
+FOR EACH ROW
+BEGIN
+    IF NEW.AStatus <> OLD.AStatus THEN
+        IF NEW.AStatus IN ('Succeeded') THEN
+            -- Insert a notification into the Notifications table
+            INSERT INTO Notifications (Reason, NStatus, AppointmentID)
+            VALUES (CONCAT('TimeD'),
+                    'Yet',
+                    NEW.AppointmentID);
+        END IF;
+    END IF;
+END
+//
+DELIMITER ;
+
+Check AStatus (Notify to Doctorss if patient schedule an appointments)
+DELIMITER //
+CREATE TRIGGER AStatus_to_Pending_Canceled
+AFTER UPDATE ON Appointments
+FOR EACH ROW
+BEGIN
+    IF NEW.AStatus <> OLD.AStatus THEN
+        IF NEW.AStatus IN ('Pending', 'Canceled') THEN
+            -- Insert a notification into the Notifications table
+            INSERT INTO Notification (Reason, NStatus, AppointmentID)
+            VALUES (CONCAT('ToDoctor'),
+                    'Yet',
+                    NEW.AppointmentID);
+        END IF;
+    END IF;
+END
+//
+DELIMITER ;

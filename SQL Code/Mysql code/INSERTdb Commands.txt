@@ -1,0 +1,88 @@
+insert all
+    into rider values(100, 'Albert Yew', '0123456789', 'active', 'NO.333,TAMAN HAINAN,KAMPUNG PAYU, 50000 KUALA LUMPUR', 2 )
+    into rider values(101, 'Afiq Akram bin Ali', '0189010887', 'inactive', 'NO.444,TAMAN BAKTI,KAMPUNG TUAH, 50000 KUALA LUMPUR', 2 )
+    into rider values(102, 'Danish a/l Muthusamin', '0118833456', 'active', 'NO.679,TAMAN BATU,KAMPUNG SATRIA, 50000 KUALA LUMPUR', 2 )
+select * from dual;
+
+insert all
+    into FOOD values(01, 'NASI GORENG', 'Food', 'HALAL AND AUTHENTIC INGREDIENT', 12.90)
+    into FOOD values(02, 'MEE GORENG', 'Food', 'HALAL AND AUTHENTIC INGREDIENT', 12.90)
+    into FOOD values(03, 'BIHUN GORENG', 'Food', 'HALAL AND AUTHENTIC INGREDIENT', 12.90)
+    into FOOD values(04, 'COCONUT MILKSHAKE', 'Drink', 'VERY SUUUUU', 4.00)
+    into FOOD values(05, 'CENDOL', 'Drink', 'USE GULA MELAKA', 5.00)
+    into FOOD values(06, 'COCONUT JUICE', 'Drink', 'FRESH WITH MEAT', 2.50 )
+select * from dual;
+
+insert all
+    into CUSTOMER values(00001, 'KOHKIANSHEN', 'B032210129@student.utem.edu.my', '0182455839', 'PT123, TAMAN BUNYA, 50000 KUALA LUMPUR')
+    into CUSTOMER values(00002, 'ANGTIONGGEE', 'B032210146@student.utem.edu.my', '0192471814', 'PT666, TAMAN HAJI, 50000 KUALA LUMPUR' )
+    into CUSTOMER values(00003, 'YEWTIISIONG', 'B032210199@student.utem.edu.my', '0168681131', 'PT999, TAMAN CUCU, 50000 KUALA LUMPUR' )
+    into CUSTOMER values(00004, 'ANGKANGHENG', 'B032210128@student.utem.edu.my', '0194693448', 'PT520, TAMAN PINANG, 50000 KUALA LUMPUR')
+    into CUSTOMER values(00005, 'ZUIKHMAR', 'B032210221@student.utem.edu.my', '01110595006', 'PT007, TAMAN MALAI, 50000 KUALA LUMPUR' )
+    into CUSTOMER values(00006, 'THANA', 'Thana@gmail.com', '0128899107', 'NO.234, TAMAN ELEK, 50000 KUALA LUMPUR' )
+    into CUSTOMER values(00007, 'FARIS AKRAM', 'FARIS@hotmail.com', '0167088112', 'PT069, TAMAN LEKIU, 50000 KUALA LUMPUR' )
+    into CUSTOMER values(00008, 'PARVIN', 'PARVIN@gmail.com', '0113721326', 'PT100, TAMAN CUCU, 50000 KUALA LUMPUR' )
+select * from dual;
+
+insert all
+    into reserve values(10000, 1, 100, 16.9, '03-07-2023', '03-07-2023')
+    into reserve values(10001, 2, 102, 47.7, '03-07-2023', '03-07-2023')
+    into reserve values(10002, 8, 102, 74.5, '03-07-2023', '03-07-2023')
+    into reserve values(10003, 5, 100, 105.6, '03-07-2023', '03-07-2023')
+    into reserve values(10004, 4, 102, 12.9, '03-07-2023', '03-07-2023')
+    into reserve values(10005, 3, 100, 253.5, '03-07-2023', '07-07-2023')
+    into reserve values(10006, 6, 100, 63.7, '03-07-2023', '04-07-2023')
+    into reserve values(10007, 7, 100, 154, '03-07-2023', '05-07-2023')
+    into reserve values(10008, 4, 100, 33.8, '04-07-2023', '04-07-2023')
+    into reserve values(10009, 2, 102, 30.8, '04-07-2023', '04-07-2023')
+    into reserve values(10010, 1, 100, 507, '04-07-2023', '06-07-2023')
+select * from dual;
+
+insert all
+    into food_reserve values(10000,1,1)
+    into food_reserve values(10000,4,1)
+    into food_reserve values(10001,1,2)
+    into food_reserve values(10001,2,1)
+    into food_reserve values(10001,4,1)
+    into food_reserve values(10001,5,1)
+    into food_reserve values(10002,2,5)
+    into food_reserve values(10002,6,4)
+    into food_reserve values(10003,1,2)
+    into food_reserve values(10003,2,2)
+    into food_reserve values(10003,3,2)
+    into food_reserve values(10003,5,6)
+    into food_reserve values(10004,1,1)
+    into food_reserve values(10005,1,5)
+    into food_reserve values(10005,2,5)
+    into food_reserve values(10005,3,5)
+    into food_reserve values(10005,4,15)
+    into food_reserve values(10006,1,2)
+    into food_reserve values(10006,2,1)
+    into food_reserve values(10006,5,5)
+    into food_reserve values(10007,3,10)
+    into food_reserve values(10007,6,10)
+    into food_reserve values(10008,1,2)
+    into food_reserve values(10008,4,2)
+    into food_reserve values(10009,1,2)
+    into food_reserve values(10009,6,2)
+    into food_reserve values(10010,1,10)
+    into food_reserve values(10010,2,10)
+    into food_reserve values(10010,3,10)
+    into food_reserve values(10010,4,30)
+select * from dual;
+
+insert all
+    into payment values(200,10000,'03-07-2023')
+    into payment values(201,10001,'03-07-2023')
+    into payment values(202,10002,'03-07-2023')
+    into payment values(203,10003,'03-07-2023')
+    into payment values(204,10004,'03-07-2023')
+    into payment values(205,10006,'03-07-2023')
+    into payment values(206,10008,'04-07-2023')
+    into payment values(207,10009,'04-07-2023')
+select * from dual;
+
+
+Departments
+insert into `departments` (`DepartmentID`, `DptName`, `Description`) VALUES (NULL, 'Emergency Department', 'Provides immediate care for critical conditions and emergencies.'), (NULL, 'Internal Medicine and Pediatrics', 'Covers both adult and pediatric patients for primary care.'), (NULL, 'Surgery and Orthopedics', 'Encompasses general surgery and orthopedic surgery.'), (NULL, 'Obstetrics and Gynecology', 'Focuses on women health, including pregnancy and childbirth.'), (NULL, 'Radiology and Laboratory Services', 'Includes diagnostic imaging and medical tests.'), (NULL, 'Cardiology and Pulmonology', 'Addresses heart and respiratory conditions.'), (NULL, 'Psychiatry and Behavioral Health', 'Provides mental health services and treatment for psychological disorders.');
+
