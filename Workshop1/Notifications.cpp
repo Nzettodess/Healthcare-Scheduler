@@ -137,8 +137,8 @@ vector<Notifications> Notifications::getNdataApp(int AppointmentID) {
 		}
 	}
 	if (db.res->rowsCount() <= 0) {
-		cout << "Empty!";
-		_getch();
+		//cout << "Empty!";
+		//_getch();
 	}
 	db.~DatabaseConnector();
 	return Notificationsl;

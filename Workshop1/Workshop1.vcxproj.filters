@@ -60,12 +60,6 @@
     <ClCompile Include="Patients.cpp">
       <Filter>Source Files\Done%28UntilFinal%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\implot-0.16\implot.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\implot-0.16\implot_items.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseConnector.h">
@@ -103,12 +97,6 @@
     </ClInclude>
     <ClInclude Include="Feedback.h">
       <Filter>Header Files\Done%28UntilFinal%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\implot-0.16\implot.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\implot-0.16\implot_internal.h">
-      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

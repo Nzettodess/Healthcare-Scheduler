@@ -66,6 +66,9 @@ public:
 	static int getLast2wkTotal();
 	//Return total number of appointments next 2 week
 	static int getNext2wkTotal();
+	static int getPastTotal();
+	static int getFutureTotal();
+
 };
 #endif
 

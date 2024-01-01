@@ -220,8 +220,8 @@ vector<Appointments> Appointments::getappdatapd(int PatientID, int DoctorID) {
 		}
 	}
 	if (db.res->rowsCount() <= 0) {
-		cout << "Empty!";
-		_getch();
+		/*cout << "Empty!";
+		_getch();*/
 	}
 	db.~DatabaseConnector();
 	return Appointmentsl;
@@ -344,5 +344,39 @@ int Appointments::getNext2wkTotal(){
 		}
 	}
 	return totalAppointments;
+	db.~DatabaseConnector();
+}
+int Appointments::getPastTotal() {
+	DatabaseConnector db;
+	int totalPastAppointments = -1;
+
+	// Adjust the query to select appointments in the past (excluding today)
+	db.prepareStatement("SELECT COUNT(*) AS AppointmentCount FROM Appointments WHERE ADate < CURDATE()");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalPastAppointments = db.res->getInt("AppointmentCount");
+		}
+	}
+
+	return totalPastAppointments;
+	db.~DatabaseConnector();
+}
+int Appointments::getFutureTotal() {
+	DatabaseConnector db;
+	int totalPastAppointments = -1;
+
+	// Adjust the query to select appointments in the past (excluding today)
+	db.prepareStatement("SELECT COUNT(*) AS AppointmentCount FROM Appointments WHERE ADate > CURDATE()");
+	db.QueryResult();
+
+	if (db.res->rowsCount() > 0) {
+		while (db.res->next()) {
+			totalPastAppointments = db.res->getInt("AppointmentCount");
+		}
+	}
+
+	return totalPastAppointments;
 	db.~DatabaseConnector();
 }

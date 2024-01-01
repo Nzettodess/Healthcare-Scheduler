@@ -123,8 +123,8 @@ vector<Doctors> Doctors::getdlist(string keyword, string sortColumn, bool ascend
 		}
 	}
 	if (db.res->rowsCount() <= 0) {
-		cout << "Empty!";
-		_getch();
+		/*cout << "Empty!";
+		_getch();*/
 	}
 
 	db.~DatabaseConnector();

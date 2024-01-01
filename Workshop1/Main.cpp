@@ -9,15 +9,13 @@
 #include <iostream>
 #include <limits>
 #include <mysql/jdbc.h>
+#include <numeric>
 #include <regex>
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h> 
 #include <thread>
 #include <time.h>
-#include "implot.h"
-#include "implot_internal.h"
-#include <numeric>
 #include <windows.h>
 
 //project header
@@ -33,9 +31,6 @@
 #include "Timer.h"
 #include "Toast.h"
 #include "wintoastlib.h"
-#include "imgui.h"
-#include "backends/imgui_impl_win32.h"
-#include "backends/imgui_impl_dx11.h"
 
 using namespace WinToastLib;
 using namespace std;
@@ -207,9 +202,11 @@ void registerAccount() {
 			}
 			else {
 				accreg.AccountID = accreg.insertacc();
+				cout << "Completed!! Press any key to continue!" << endl;
+				_getch();
 			
 			}
-							
+			
 			if (isPatient) {
 				registerPatientProfile(accreg.AccountID);
 			}
@@ -289,7 +286,7 @@ void registerPatientProfile(int AccountID) {
 			cout << "Please enter your date of birth (YYYY-MM-DD): ";
 			cin >> profilep.DateOfBirth;
 
-			if (validateFormat(profilep.DateOfBirth, R"(\d{4}-\d{2}-\d{2})")) {
+			if (validateFormat(profilep.DateOfBirth, R"(\d{4}-\d{2}-\d{2})") && isValidDOB(profilep.DateOfBirth.substr(0, 4), profilep.DateOfBirth.substr(5, 2), profilep.DateOfBirth.substr(8, 2))) {
 				cout << "Valid format." << endl;
 				RM2.setValue(3, profilep.DateOfBirth);
 				break;
@@ -928,9 +925,10 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 	string displayString = "", sortColumn = "AppointmentID";
 	bool ascending = true;
 		bool isAll = true;
+		bool istime = true;
 
 	//Show the list at first encounter
-	Appointments = Appointments::getapplistp(p.PatientID, sortColumn, ascending, isAll);
+	
 	bool foundAppointment;
 	//AppointmentMenu
 	Menu AM;
@@ -952,7 +950,9 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 	ASSM.addOption("->> Time");
 	ASSM.addOption("->> Status");
 	ASSM.addOption("->> DoctorID");
+	Appointments = Appointments::getapplistp(p.PatientID, sortColumn, ascending, isAll);
 
+	//std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	while (1) {
 
 		AM.setValue(0, sortColumn);
@@ -1097,6 +1097,7 @@ void patientAppointmentMenu(Accounts a, Patients p) {
 			break;
 		}
 	}
+	
 }
 void addAppointmentMenu(Accounts a, Patients p) {
 
@@ -1268,8 +1269,7 @@ void feedbackMenu(Accounts a, Patients p) {
 	string displayString = "", sortColumn = "FeedbackID";
 	bool ascending = true;
 
-	//Show the list at first encounter
-	Feedback = Feedback::getflistp(p.PatientID, sortColumn, ascending);
+	
 
 	//Feedback Menu 
 	Menu FM;
@@ -1288,7 +1288,8 @@ void feedbackMenu(Accounts a, Patients p) {
 	FSSM.addOption("->> Ratings");
 	FSSM.addOption("->> Date");
 	FSSM.addOption("->> DoctorID");
-
+	//Show the list at first encounter
+	Feedback = Feedback::getflistp(p.PatientID, sortColumn, ascending);
 	while (1) {
 
 		FM.setValue(0, sortColumn);
@@ -1739,7 +1740,7 @@ void viewDepartmentList(Accounts a, Patients p) {
 //HomeMenuDoctors
 void homeDoctor(Accounts a, Doctors d) {
 	auto notificationCallback = [a, d]() { doctorNotificationChecker(a, d); };
-	Timer::getInstance().startTimer(60, notificationCallback);
+	Timer::getInstance().startTimer(10, notificationCallback);
 	//HomeMenuDoctors
 	Menu HMD;
 	HMD.addOption("->> Profile Details");
@@ -1804,10 +1805,8 @@ void doctorNotificationChecker(Accounts a, Doctors d) {
 	vector<Notifications> Notifications;
 
 	d.getddataa(a.AccountID);
-
-
 	//Get data for appointment using DoctorID, we dont have patientID in this case
-	Appointments = Appointments::getappdatapd(d.DoctorID, -1);
+	Appointments = Appointments::getappdatapd(-1, d.DoctorID);
 
 	for (int i = 0; i < Appointments.size(); i++) {
 
@@ -1990,8 +1989,7 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 	bool ascending = true;
 		bool isAll = true;
 
-	//Show the list at first encounter
-	Appointments = Appointments::getapplistd(d.DoctorID, sortColumn, ascending, isAll);
+
 	bool foundAppointment;
 	//AppointmentMenu
 	Menu AM;
@@ -2021,6 +2019,8 @@ void doctorAppointmentMenu(Accounts a, Doctors d) {
 	DASM.addOption("->> Back");
 	DASM.footer = "\nYou are no longer able to change it after you select it! \nPlease be caution on what you want to select!";
 
+	//Show the list at first encounter
+	Appointments = Appointments::getapplistd(d.DoctorID, sortColumn, ascending, isAll);
 
 	while (1) {
 
@@ -4367,7 +4367,8 @@ void addFeedback(){
 
 		case 2:
 			cout << "Please enter the comments: : ";
-			cin >> fafm.Comments;
+			//cin >> fafm.Comments;
+			getline(cin, fafm.Comments);
 			AFM.setValue(1, fafm.Comments);
 			break;
 
@@ -4958,6 +4959,12 @@ void statistics() {
 	int next2wkAPP = -1;
 	next2wkAPP = Appointments::getNext2wkTotal();
 
+	int pastAPP = -1;
+	pastAPP = Appointments::getPastTotal();
+	
+	int futureAPP = -1;
+	futureAPP = Appointments::getFutureTotal();
+
 	Feedback f;
 	int totalFeedback = -1;
 	totalFeedback = Feedback::getTotal();
@@ -5035,6 +5042,8 @@ void statistics() {
 	APPM.addOption("->> Total Appointments Tomorrow");
 	APPM.addOption("->> Total Appointments Last Two Weeks");
 	APPM.addOption("->> Total Appointments Next Two Weeks");
+	APPM.addOption("->> Total Appointments in Past");
+	APPM.addOption("->> Total Appointments in Future");
 	APPM.footer = "\nPress any key to go back";
 
 	Menu FM;
@@ -5129,6 +5138,8 @@ void statistics() {
 			APPM.setValue(2, to_string(tmrtotalAPP));
 			APPM.setValue(3, to_string(last2wkAPP));
 			APPM.setValue(4, to_string(next2wkAPP));
+			APPM.setValue(5, to_string(pastAPP));
+			APPM.setValue(6, to_string(futureAPP));
 			// get the value of the user
 			switch (APPM.prompt()) {
 			case 1:
@@ -5176,6 +5187,13 @@ int main() {
 
 }
 void mainMenu() {
+
+	string messages1;
+	string messages2;
+
+	wstring wMessages1;
+	wstring wMessages2;
+
 	//Main menu
 	Menu MM;
 	MM.header = "Welcome to Healthcare Appointments Scheduler\n\nAre you a new user or existing user?";
@@ -5184,7 +5202,7 @@ void mainMenu() {
 	MM.addOption("->> Existing user (Login for Doctor)");
 	MM.addOption("->> Existing user (Login for Admin)");
 	MM.addOption("->> Exit");
-	//MM.addOption("->> Exit");
+	//MM.addOption("->> ShowToast");
 	MM.footer = "\nEnter the number that represents your selection.";
 
 	while (1) {
@@ -5206,6 +5224,13 @@ void mainMenu() {
 
 		case 5:
 			exit(0);
+		case 6:
+			 messages1 = "Welcome to Healthcare Scheduler!";
+			 messages2 = "This is a special eastern egg for you!";
+
+			 wMessages1 = Toast::stringToWstring(messages1);
+			 wMessages2 = Toast::stringToWstring(messages2);
+			Toast::toastingmsg(wMessages1, wMessages2);
 		default:
 			break;
 		}
@@ -5268,7 +5293,7 @@ bool isValidTime(const string& hours, const string& minutes, const string& secon
 	int secondsInt = stoi(seconds);
 
 	// Basic checks for hours, minutes, and seconds
-	return (hoursInt >= 8 && hoursInt <= 18) &&
+	return (hoursInt >= 8 && hoursInt <= 17) &&
 		(minutesInt >= 0 && minutesInt <= 59) &&
 		(secondsInt >= 0 && secondsInt <= 59);
 }

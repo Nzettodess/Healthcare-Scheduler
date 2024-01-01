@@ -151,8 +151,8 @@ vector<Patients> Patients::getplist(string keyword, string sortColumn, bool asce
 		}
 	}
 	if (db.res->rowsCount() <= 0) {
-		cout << "Empty!";
-		_getch();
+		/*cout << "Empty!";
+		_getch();*/
 	}
 
 	db.~DatabaseConnector();
